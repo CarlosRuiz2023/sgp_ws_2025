@@ -1,0 +1,505 @@
+# * AUTOR: JOSE IGNACIO VAQUEIRO GLEZ
+# * DESCRIPCIÓN: INTEGRACION CONTINUA PARA API TYPESCRIPT
+
+# * RAMAS A UTILIZAR:
+# * develop      -> Despliegue directo en desarrollo.
+# * qa           -> Merge de develop a qa para despliegue a calidad.
+# * master/main  -> Merge de qa a master una vez aprobada la version de qa.
+# * tags         -> Se crea una version a partir de la rama master/main para su despliegue a productivo. (TAGS ej: v1.0.0)
+
+# * RUNNERS TAGS:
+# * regishubleon  -> Servidor de imagenes de Docker.
+# * desarrollo    -> Servidor DEV
+# * calidad       -> Servidor QA
+# * productivo    -> Servidor PROD
+
+# AMBIENTE DESARROLLO Y CALIDAD AGARRAN VARIABLES DESDE CODIGO....
+# AMBIENTE DE PRODUCTIVO REQUIERE ACTUALIZAR ARCHIVO DE VARIABLES !!
+# env.prod.ts <===> cargar-variables-prod-vers
+
+stages:
+  # DESARROLLO
+  - desplegar-dev
+  - crear-carpeta-dev
+  - crear-carpeta-dev-registry
+  - clonar-repo-dev
+  - crear-imagen-dev
+  - publicar-imagen-dev
+  - detener-dev-servicio
+  - iniciar-dev-servicio
+  - limpiar-dev
+  - limpiar-dev-registry
+
+  # CALIDAD
+  - desplegar-qa
+  - crear-carpeta-qa
+  - crear-carpeta-qa-registry
+  - clonar-repo-qa
+  - crear-imagen-qa
+  - publicar-imagen-qa
+  - detener-qa-servicio
+  - iniciar-qa-servicio
+  - limpiar-qa
+  - limpiar-qa-registry
+
+  # CREAR VERSIONADO
+  - desplegar-version
+  - crear-carpeta-vers-registry
+  - clonar-repo-vers
+  - crear-imagen-vers
+  - publicar-imagen-vers
+  - limpiar-registry-vers
+
+  # PRODUCCION
+  - crear-carpeta-prod-vers
+  - cargar-variables-prod-vers
+  - detener-prod-vers
+  - iniciar-prod-vers
+  - limpiar-prod-vers
+
+
+# * SERVIDOR DE DESARROLLO - MANUAL
+# * ------------------------------------------------ #
+desplegar-dev:
+  stage: desplegar-dev
+  tags:
+    - regishubleon
+  script:
+    - echo "Iniciando despliegue en Servidor de Desarrollo --->"
+  when: manual
+  only:
+    - develop
+
+crear-carpeta-dev:
+  stage: crear-carpeta-dev
+  needs: ["desplegar-dev"]
+  tags:
+    - desarrollo
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-DEV
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV
+  only:
+    - develop
+
+crear-carpeta-dev-registry:
+  stage: crear-carpeta-dev-registry
+  needs: ["crear-carpeta-dev"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-DEV
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV
+  only:
+    - develop
+
+clonar-repo-dev:
+  stage: clonar-repo-dev
+  needs: ["crear-carpeta-dev-registry"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV
+    - git clone https://oauth2:$TOKEN_REPO@$CI_SERVER_HOST/$CI_PROJECT_PATH
+    - sudo git config --global --add safe.directory /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV/$CI_PROJECT_NAME
+  only:
+    - develop
+
+crear-imagen-dev:
+  stage: crear-imagen-dev
+  needs: ["clonar-repo-dev"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV/$CI_PROJECT_NAME
+    - sudo git fetch
+    - sudo git checkout $CI_COMMIT_SHA
+    - sudo docker build -t $REGISTRY_IMAGE_DEV --build-arg NODE_VERSION=$VERSION_NODE .
+  only:
+    - develop
+
+publicar-imagen-dev:
+  stage: publicar-imagen-dev
+  needs: ["crear-imagen-dev"]
+  tags:
+    - regishubleon
+  script:
+    - sudo docker tag $REGISTRY_IMAGE_DEV:latest $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+    - sudo docker push $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+  only:
+    - develop
+
+detener-dev-servicio:
+  stage: detener-dev-servicio
+  needs: ["publicar-imagen-dev"]
+  tags:
+    - desarrollo
+  script:
+    - sudo docker rm --force $REGISTRY_IMAGE_DEV
+    - sudo docker rmi $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+  allow_failure: true
+  only:
+    - develop
+
+iniciar-dev-servicio:
+  stage: iniciar-dev-servicio
+  needs: ["detener-dev-servicio"]
+  tags:
+    - desarrollo
+  script:
+    - sudo docker pull $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+    - sudo docker run -d -e NODE_ENV=DEV -e APP_VERSION=$CI_COMMIT_SHORT_SHA -e DEV_API_PORT=$DEV_API_PORT -e APP_NAME=$APP_NAME --network $DOCKER_NETWORK_DEV --expose $DEV_API_PORT --name $REGISTRY_IMAGE_DEV --restart=always $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+  only:
+    - develop
+
+limpiar-dev:
+  stage: limpiar-dev
+  needs: ["iniciar-dev-servicio"]
+  tags:
+    - desarrollo
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+  allow_failure: true
+  only:
+    - develop
+
+limpiar-dev-registry:
+  stage: limpiar-dev-registry
+  needs: ["iniciar-dev-servicio"]
+  tags:
+    - regishubleon
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-DEV
+    - sudo docker rmi $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.dev
+    - sudo docker rmi $REGISTRY_IMAGE_DEV:latest
+    - sudo docker image prune -a --force --filter "until=2h"
+    - sudo docker image prune -a --force --filter "until=5h"
+    - sudo docker image prune -a --force --filter "until=24h"
+  allow_failure: true
+  only:
+    - develop
+
+
+# * SERVIDOR DE QA - MANUAL
+# * ------------------------------------------------ #
+desplegar-qa:
+  stage: desplegar-qa
+  tags:
+    - regishubleon
+  script:
+    - echo "Iniciando despliegue en Servidor de QA --->"
+  when: manual
+  only:
+    - qa 
+
+crear-carpeta-qa:
+  stage: crear-carpeta-qa
+  needs: ["desplegar-qa"]
+  tags:
+    - calidad
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-QA
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-QA
+  only:
+    - qa  
+
+crear-carpeta-qa-registry:
+  stage: crear-carpeta-qa-registry
+  needs: ["crear-carpeta-qa"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-QA
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-QA
+  only:
+    - qa
+
+clonar-repo-qa:
+  stage: clonar-repo-qa
+  needs: ["crear-carpeta-qa-registry"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-QA
+    - git clone https://oauth2:$TOKEN_REPO@$CI_SERVER_HOST/$CI_PROJECT_PATH
+    - sudo git config --global --add safe.directory /home/$USER_RUNNER/$CI_PROJECT_NAME-QA/$CI_PROJECT_NAME
+  allow_failure: true
+  only:
+    - qa
+
+crear-imagen-qa:
+  stage: crear-imagen-qa
+  needs: ["clonar-repo-qa"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-QA/$CI_PROJECT_NAME
+    - sudo git fetch
+    - sudo git checkout $CI_COMMIT_SHA
+    - sudo docker build -t $REGISTRY_IMAGE_QA --build-arg NODE_VERSION=$VERSION_NODE .
+  only:
+    - qa
+
+publicar-imagen-qa:
+  stage: publicar-imagen-qa
+  needs: ["crear-imagen-qa"]
+  tags:
+    - regishubleon
+  script:
+    - sudo docker tag $REGISTRY_IMAGE_QA:latest $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.qa
+    - sudo docker push $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.qa
+  only:
+    - qa
+
+detener-qa-servicio:
+  stage: detener-qa-servicio
+  needs: ["publicar-imagen-qa"]
+  tags:
+    - calidad
+  script:
+    - sudo docker rm --force $REGISTRY_IMAGE_QA
+  allow_failure: true
+  only:
+    - qa
+
+iniciar-qa-servicio:
+  stage: iniciar-qa-servicio
+  needs: ["detener-qa-servicio"]
+  tags:
+    - calidad
+  script:
+    - sudo docker pull $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.qa
+    - sudo docker run -d -e NODE_ENV=QA -e APP_VERSION=$CI_COMMIT_SHORT_SHA -e QA_API_PORT=$QA_API_PORT -e APP_NAME=$APP_NAME --network $DOCKER_NETWORK_QA --expose $QA_API_PORT --name $REGISTRY_IMAGE_QA --restart=always $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.qa
+  only:
+    - qa
+
+limpiar-qa:
+  stage: limpiar-qa
+  needs: ["iniciar-qa-servicio"]
+  tags:
+    - calidad
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-QA
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+  allow_failure: true
+  only:
+    - qa
+
+limpiar-qa-registry:
+  stage: limpiar-qa-registry
+  needs: ["iniciar-qa-servicio"]
+  tags:
+    - regishubleon
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-QA
+    - sudo docker rmi $REGISTRY_URL/$REGISTRY_IMAGE_PATH:vlast.qa
+    - sudo docker rmi $REGISTRY_IMAGE_QA:latest
+    - sudo docker image prune -a --force --filter "until=2h"
+    - sudo docker image prune -a --force --filter "until=5h"
+    - sudo docker image prune -a --force --filter "until=24h"
+  allow_failure: true
+  only:
+    - qa
+
+
+# * VERSIONAMIENTO - (v1.0.0)
+# * ------------------------------------------------ #
+desplegar-version:
+  stage: desplegar-version
+  tags:
+    - regishubleon
+  script:
+    - echo "Iniciando despliegue de Versionamiento PROD --->"
+  when: manual
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/ 
+
+crear-carpeta-vers-registry:
+  stage: crear-carpeta-vers-registry
+  needs: ["desplegar-version"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-VERSION
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-VERSION
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+clonar-repo-vers:
+  stage: clonar-repo-vers
+  needs: ["crear-carpeta-vers-registry"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-VERSION
+    - git clone https://oauth2:$TOKEN_REPO@$CI_SERVER_HOST/$CI_PROJECT_PATH
+    - sudo git config --global --add safe.directory /home/$USER_RUNNER/$CI_PROJECT_NAME-VERSION/$CI_PROJECT_NAME
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+crear-imagen-vers:
+  stage: crear-imagen-vers
+  needs: ["clonar-repo-vers"]
+  tags:
+    - regishubleon
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-VERSION/$CI_PROJECT_NAME
+    - sudo git fetch
+    - sudo git checkout $CI_COMMIT_SHA
+    - sudo docker build -t $REGISTRY_IMAGE_VERSION --build-arg NODE_VERSION=$VERSION_NODE .
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/ 
+
+publicar-imagen-vers:
+  stage: publicar-imagen-vers
+  needs: ["crear-imagen-vers"]
+  tags:
+    - regishubleon
+  script:
+    - sudo docker tag $REGISTRY_IMAGE_VERSION:latest $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+    - sudo docker push $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+limpiar-registry-vers:
+  stage: limpiar-registry-vers
+  needs: ["publicar-imagen-vers"]
+  tags:
+    - regishubleon
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-VERSION
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+    - sudo docker rmi $REGISTRY_IMAGE_VERSION:latest
+    - sudo docker rmi $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+    - sudo docker image prune -a --force --filter "until=5h"
+    - sudo docker image prune -a --force --filter "until=24h"
+  allow_failure: true
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+
+
+# * SERVIDOR PRODUCTIVO - VERSIONAMIENTO
+# * ------------------------------------------------ #
+crear-carpeta-prod-vers:
+  stage: crear-carpeta-prod-vers
+  needs: ["publicar-imagen-vers"]
+  tags:
+    - productivo
+  script:
+    - cd /home/$USER_RUNNER
+    - sudo mkdir $CI_PROJECT_NAME-VERS-PROD
+    - sudo chown $USER_RUNNER:$USER_RUNNER -R /home/$USER_RUNNER/$CI_PROJECT_NAME-VERS-PROD
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+cargar-variables-prod-vers:
+  stage: cargar-variables-prod-vers
+  needs: ["crear-carpeta-prod-vers"]
+  tags:
+    - productivo
+  script:
+    - cd /home/$USER_RUNNER/$CI_PROJECT_NAME-VERS-PROD
+    - sudo echo "REPO_NAME=$CI_PROJECT_NAME">> "PROD.env"
+    - rm -r PROD.env
+    - sudo echo "APP_NAME=$APP_NAME">> "PROD.env"
+    - sudo echo "APP_DEBUG=$APP_DEBUG">> "PROD.env"
+    - sudo echo "APP_VERSION=$CI_COMMIT_TAG">> "PROD.env"
+    - sudo echo "PROD_API_PORT=$PROD_API_PORT">> "PROD.env"
+    - sudo echo "PROD_API_SECRET_KEY=$PROD_API_SECRET_KEY">> "PROD.env"
+    - sudo echo "PROD_API_CORS=$PROD_API_CORS">> "PROD.env"
+    - sudo echo "NODE_ENV=PROD">> "PROD.env"
+
+    # DE AQUI PARA ABAJO SE DEFINEN LAS VARIABLES DE PRODUCCION
+    # LOGS
+    - sudo echo "PROD_LOGS_BASE_URI=$PROD_LOGS_BASE_URI">> "PROD.env"
+    - sudo echo "PROD_LOGS_KEY=$PROD_LOGS_KEY">> "PROD.env"
+    - sudo echo "PROD_LOGS_CLIENT_ID=$PROD_LOGS_CLIENT_ID">> "PROD.env"
+    - sudo echo "PROD_LOGS_SECRET_KEY=$PROD_LOGS_SECRET_KEY">> "PROD.env"
+    - sudo echo "PROD_LOGS_SCOPE=$PROD_LOGS_SCOPE">> "PROD.env"
+    - sudo echo "PROD_LOGS_APLICATIVO=$PROD_LOGS_APLICATIVO">> "PROD.env"
+    # IDENTITY FUNCIONARIO
+    - sudo echo "PROD_IDENTITYF_BASE_URI=$PROD_IDENTITYF_BASE_URI">> "PROD.env"
+    - sudo echo "PROD_IDENTITYF_CLIENT_ID=$PROD_IDENTITYF_CLIENT_ID">> "PROD.env"
+    - sudo echo "PROD_IDENTITYF_CLIENT_SECRET=$PROD_IDENTITYF_CLIENT_SECRET">> "PROD.env"
+    - sudo echo "PROD_IDENTITYF_GRANT_TYPE=$PROD_IDENTITYF_GRANT_TYPE">> "PROD.env"
+    - sudo echo "PROD_IDENTITYF_SCOPES=$PROD_IDENTITYF_SCOPES">> "PROD.env"
+    # MONGODB
+    - sudo echo "PROD_MONGO_HOST=$PROD_MONGO_HOST">> "PROD.env"
+    - sudo echo "PROD_MONGO_PORT=$PROD_MONGO_PORT">> "PROD.env"
+    - sudo echo "PROD_MONGO_USER_NAME=$PROD_MONGO_USER_NAME">> "PROD.env"
+    - sudo echo "PROD_MONGO_USER_PASSWORD=$PROD_MONGO_USER_PASSWORD">> "PROD.env"
+    - sudo echo "PROD_MONGO_DATABASE=$PROD_MONGO_DATABASE">> "PROD.env"
+    # MYSQL
+    - sudo echo "PROD_MYSQL_HOST=$PROD_MYSQL_HOST">> "PROD.env"
+    - sudo echo "PROD_MYSQL_PORT=$PROD_MYSQL_PORT">> "PROD.env"
+    - sudo echo "PROD_MYSQL_USER_NAME=$PROD_MYSQL_USER_NAME">> "PROD.env"
+    - sudo echo "PROD_MYSQL_USER_PASSWORD=$PROD_MYSQL_USER_PASSWORD">> "PROD.env"
+    - sudo echo "PROD_MYSQL_DATABASE=$PROD_MYSQL_DATABASE">> "PROD.env"
+    # SQL
+    - sudo echo "PROD_SQL_HOST=$PROD_SQL_HOST">> "PROD.env"
+    - sudo echo "PROD_SQL_PORT=$PROD_SQL_PORT">> "PROD.env"
+    - sudo echo "PROD_SQL_USER_NAME=$PROD_SQL_USER_NAME">> "PROD.env"
+    - sudo echo "PROD_SQL_USER_PASSWORD=$PROD_SQL_USER_PASSWORD">> "PROD.env"
+    - sudo echo "PROD_SQL_DATABASE=$PROD_SQL_DATABASE">> "PROD.env"
+    - sudo echo "PROD_SQL_ENCRYPT=$PROD_SQL_ENCRYPT">> "PROD.env"
+    
+    - sudo echo "VARIABLE_CODIGO=$VARIABLE_GITLAB">> "PROD.env"
+
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+detener-prod-vers:
+  stage: detener-prod-vers
+  needs: ["cargar-variables-prod-vers"]
+  tags:
+    - productivo
+  script:
+    - sudo docker rm --force $REGISTRY_IMAGE_PROD
+  allow_failure: true
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+
+iniciar-prod-vers:
+  stage: iniciar-prod-vers
+  needs: ["detener-prod-vers"]
+  tags:
+    - productivo
+  script:
+    - sudo docker pull $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+    #- sudo docker run -d --env-file /home/$USER_RUNNER/$CI_PROJECT_NAME-VERS-PROD/PROD.env --network $DOCKER_NETWORK_PROD --expose $PROD_API_PORT --name $REGISTRY_IMAGE_PROD --restart=always $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+    - sudo docker run -d --env-file /home/$USER_RUNNER/$CI_PROJECT_NAME-VERS-PROD/PROD.env  -p $PROD_API_PORT:$PROD_API_PORT --name $REGISTRY_IMAGE_PROD --restart=always $REGISTRY_URL/$REGISTRY_IMAGE_PATH:$CI_COMMIT_TAG
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/
+
+limpiar-prod-vers:
+  stage: limpiar-prod-vers
+  needs: ["iniciar-prod-vers"]
+  tags:
+    - productivo
+  script:
+    - sudo rm -r --force /home/$USER_RUNNER/$CI_PROJECT_NAME-VERS-PROD
+    - sudo rm -r --force /home/$USER_RUNNER/builds/$CI_RUNNER_SHORT_TOKEN
+    - sudo docker image prune -a --force --filter "until=24h"
+  allow_failure: true
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+-?.*$/

@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+
+  #QA
+  node-typescript-example-qa:
+    container_name: 'node-typescript-example-qa'
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=QA
+
+networks:
+  default:
+    external:
+      name: br0

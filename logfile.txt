@@ -1,0 +1,6 @@
+[11-08-2025 08:18:49] ERROR: Error durante la ejecución de obtenerObra: colonia is associated to obra using an alias. You've included an alias (colonia), but it does not match the alias(es) defined in your association (colonium).
+[11-08-2025 08:18:54] ERROR: Error durante la ejecución de obtenerObra: colonia is associated to obra using an alias. You've included an alias (colonia), but it does not match the alias(es) defined in your association (colonium).
+[11-08-2025 08:37:10] ERROR: Error durante la ejecución de obtenerObra: no existe la columna colonium.subsector
+[11-08-2025 08:39:35] ERROR: Error durante la ejecución de obtenerObra: no existe la columna colonium.nombre
+[11-08-2025 08:40:12] ERROR: Error durante la ejecución de obtenerObra: colonia is associated to obra using an alias. You've included an alias (colonia), but it does not match the alias(es) defined in your association (colonium).
+[11-08-2025 08:44:41] ERROR: Error durante la ejecución de obtenerObra: no existe la columna colonia.nombre

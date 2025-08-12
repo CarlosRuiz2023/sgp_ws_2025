@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+
+  #PROD
+  node-typescript-example-prod:
+    container_name: 'node-typescript-example-prod'
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=PROD
+
+networks:
+  default:
+    external:
+      name: br0

@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+
+  #DESARROLLO
+  node-typescript-example-dev:
+    container_name: 'node-typescript-example-dev'
+    build:
+      context: ../../../
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - NODE_ENV=DEV
+
+networks:
+  default:
+    external:
+      name: br0

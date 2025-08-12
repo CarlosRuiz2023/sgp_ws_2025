@@ -1,0 +1,60 @@
+{
+  "name": "api-node-ts-docker",
+  "version": "1.0.0",
+  "description": "Api de nodejs integrada con typescript",
+  "main": "index.js",
+  "scripts": {
+    "start-docker": "node dist/index.js",
+    "start": "tsc&&set NODE_ENV=LOCAL&&nodemon dist/index.js",
+    "local": "tsc&&set NODE_ENV=LOCAL&&node dist/index.js",
+    "start-dev": "tsc&&set NODE_ENV=DEV&&nodemon dist/index.js",
+    "dev": "tsc&&set NODE_ENV=DEV&&node dist/index.js",
+    "qa": "tsc&&set NODE_ENV=QA&&node dist/index.js",
+    "prod": "tsc&&set NODE_ENV=PROD&&node dist/index.js",
+    "docker-local": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=LOCAL -d api_ts_demo",
+    "docker-dev": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=DEV -d api_ts_demo",
+    "docker-qa": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=QA -d api_ts_demo",
+    "docker-prod": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=PROD -d api_ts_demo",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CarlosRuiz2023/sgp_ws.git"
+  },
+  "author": "Juan Carlos Ruiz Gomez",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-simple": "^0.5.6",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "morgan": "^1.10.0",
+    "mssql": "^11.0.1",
+    "node-adodb": "^5.0.3",
+    "node-cron": "^3.0.3",
+    "nodemon": "^2.0.15",
+    "pg": "^8.14.1",
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.1.3",
+    "swagger-ui-express": "^5.0.0",
+    "tedious": "^18.6.1",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.3",
+    "@types/node-cron": "^3.0.11",
+    "@types/swagger-ui-express": "^4.1.6"
+  }
+}
