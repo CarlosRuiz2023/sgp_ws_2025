@@ -19,7 +19,7 @@ const ColoniaModel = async () => {
     sector:{
       type:DataTypes.INTEGER
     },
-    subsector:{
+    subSector:{
       type:DataTypes.INTEGER,
     },
     estatus:{
