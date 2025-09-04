@@ -11,7 +11,6 @@ const ObraModel = async () => {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     id_colonia: {
       type: DataTypes.STRING,

@@ -1,3 +1,4 @@
+import { col, fn, Op, where } from "sequelize";
 import { Colonia } from "../models/colonia.model";
 import { Obra } from "../models/obra.model";
 
@@ -19,17 +20,61 @@ export class ObraController {
   public async obtenerObras(data: any) {
     const params = await data;
     const { limit, offset } = params;
+    let { filtro, busqueda } = params;
 
-    const result = await Obra.findAndCountAll({
-      where: { estatus: 1 },
-      limit,
-      offset,
-      include: [{
-        model: Colonia,
-        as: 'colonia',
-        attributes: ['colonia']
-      }]
-    });
+    let result = null;
+
+    if (filtro != undefined || filtro != undefined) {
+      if (filtro === 'id_colonia') {
+        const colonia = await Colonia.findAll({
+          where: where(
+            fn("unaccent", col("colonia")),
+            {
+              [Op.iLike]: `%${busqueda}%`  // iLike = case-insensitive
+            }
+          )
+        });
+        busqueda = [];
+        for (let index = 0; index < colonia.length; index++) {
+          const { id_colonia } = colonia[index];
+          busqueda.push(id_colonia);
+        }
+      }
+
+      result = await Obra.findAndCountAll({
+        where: {
+          [filtro]: filtro === 'calle'
+            ? where(
+              fn("unaccent", col("calle")),
+              { [Op.iLike]: `%${busqueda}%` }   // insensible a mayúsculas y minúsculas
+            )     // búsquedas parciales
+            : filtro === 'id_colonia'
+              ? { [Op.in]: busqueda }             // arreglo de ids
+              : busqueda,                         // coincidencia exacta
+          estatus: 1,
+        },
+        order: [['id_obra', 'DESC']],
+        limit,
+        offset,
+        include: [{
+          model: Colonia,
+          as: 'colonia',
+          attributes: ['colonia']
+        }]
+      });
+    } else {
+      result = await Obra.findAndCountAll({
+        where: { estatus: 1 },
+        order: [['id_obra', 'DESC']],
+        limit,
+        offset,
+        include: [{
+          model: Colonia,
+          as: 'colonia',
+          attributes: ['colonia']
+        }]
+      });
+    }
 
     return {
       obras: result.rows,              // Lista de obras paginadas
@@ -41,14 +86,22 @@ export class ObraController {
 
   public async agregarObra(data: any) {
     const params = await data;
-    const { id_colonia, calle, traza_du, tramo } = params;
+    const { id_colonia, calle, tramo } = params;
     const nueva_obra = await Obra.create({
       id_colonia,
       calle,
-      traza_du,
       tramo
     });
-    return nueva_obra;
+
+    const obra_recuperada = await Obra.findByPk(nueva_obra.id_obra, {
+      include: [{
+        model: Colonia,
+        as: 'colonia',
+        attributes: ['colonia']
+      }]
+    });
+
+    return obra_recuperada;
   }
 
   public async actualizarObra(data: any) {
