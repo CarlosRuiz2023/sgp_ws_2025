@@ -51,7 +51,6 @@ export class ObraController {
             : filtro === 'id_colonia'
               ? { [Op.in]: busqueda }             // arreglo de ids
               : busqueda,                         // coincidencia exacta
-          estatus: 1,
         },
         order: [['id_obra', 'DESC']],
         limit,
@@ -64,7 +63,6 @@ export class ObraController {
       });
     } else {
       result = await Obra.findAndCountAll({
-        where: { estatus: 1 },
         order: [['id_obra', 'DESC']],
         limit,
         offset,

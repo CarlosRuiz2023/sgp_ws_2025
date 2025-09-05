@@ -39,3 +39,4 @@
 [04-09-2025 11:49:53] ERROR: Error durante la ejecución de obtenerObras: Operation timeout
 [04-09-2025 11:50:45] ERROR: Error durante la ejecución de obtenerObras: no existe la columna obra.colonia
 [04-09-2025 12:04:46] ERROR: Error durante la ejecución de obtenerObras: value.map is not a function
+[05-09-2025 10:58:47] ERROR: Error durante la ejecución de cargarArchivo: undefined

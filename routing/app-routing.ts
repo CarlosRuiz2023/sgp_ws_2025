@@ -5,11 +5,13 @@ import UsuarioRoutes from "../routes/usuario.routes";
 import AuthRoutes from "../routes/auth.routes";
 import ObraRoutes from "../routes/obra.routes";
 import ColoniaRoutes from "../routes/colonia.routes";
+import UploadRoutes from "../routes/upload.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
     router.use('/usuario',UsuarioRoutes),
     router.use('/auth',AuthRoutes),
     router.use('/obra',ObraRoutes),
-    router.use('/colonia',ColoniaRoutes)
+    router.use('/colonia',ColoniaRoutes),
+    router.use('/upload',UploadRoutes)
 ];

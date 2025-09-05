@@ -12,6 +12,7 @@ import { UtilFecha } from "./utils/UtilFecha";
 import swaggerUI from "swagger-ui-express";
 import { SwaggerInterface } from "./config/swagger/swagger-interface";
 import { initConnections } from "./config/db/connection";
+import fileUpload from "express-fileupload";
 
 const _UtilFecha = new UtilFecha();
 const environment = Environment();
@@ -38,6 +39,11 @@ var _SwaggerInterface = new SwaggerInterface();
   //CARGAMOS CONFIGURACIONES
   www.api.use(Express.json());
   www.api.use(Express.urlencoded({ extended: true }));
+  www.api.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+    createParentPath: true,
+  }));
 
   //CONFIGURACION DE CORS
   const options: cors.CorsOptions = {
@@ -53,19 +59,19 @@ var _SwaggerInterface = new SwaggerInterface();
     credentials: true,
     methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
     origin: function (origin, callback) {
-    // Permite requests sin origin (como mobile apps o Postman)
-    if (!origin) return callback(null, true);
-    
-    // Verifica si el origin está en la whitelist
-    if (CORS_WHITE_LIST.indexOf(origin) !== -1 || CORS_WHITE_LIST.indexOf('*') !== -1) {
-      return callback(null, true);
-    }
-    
-    callback(new Error('No permitido por CORS'));
-  },
-  preflightContinue: false,
-  optionsSuccessStatus: 200 // Para compatibilidad con navegadores legacy
-};
+      // Permite requests sin origin (como mobile apps o Postman)
+      if (!origin) return callback(null, true);
+
+      // Verifica si el origin está en la whitelist
+      if (CORS_WHITE_LIST.indexOf(origin) !== -1 || CORS_WHITE_LIST.indexOf('*') !== -1) {
+        return callback(null, true);
+      }
+
+      callback(new Error('No permitido por CORS'));
+    },
+    preflightContinue: false,
+    optionsSuccessStatus: 200 // Para compatibilidad con navegadores legacy
+  };
 
   //USO DE CORS
   www.api.use(cors(options));
