@@ -1,18 +1,129 @@
 import bcryptjs from "bcryptjs";
 import { Usuario } from "../models/usuario.model";
+import { Rol } from "../models/rol.model";
+import { Empresa } from "../models/empresa.model";
+import { col, fn, Op, where } from "sequelize";
 
 export class UsuarioController {
 
   public async obtenerUsuario(data: any) {
     const params = await data;
     const { id_usuario } = params;
-    const usuario = await Usuario.findByPk(id_usuario);
+    const usuario = await Usuario.findByPk(id_usuario, {
+      include: [{
+        model: Rol,
+        as: 'rol',
+        attributes: ['rol']
+      },
+      {
+        model: Empresa,
+        as: 'empresa',
+        attributes: ['empresa']
+      }]
+    });
     return usuario;
   }
 
-  public async obtenerUsuarios() {
-    const usuarios = await Usuario.findAll({where:{estatus:1}});
-    return usuarios;
+  public async obtenerUsuarios(data: any) {
+    const params = await data;
+    const { limit, offset } = params;
+    let { filtro, busqueda } = params;
+
+    let result = null;
+
+    if (filtro != undefined || filtro != undefined) {
+      if (filtro === 'id_rol') {
+        const rol = await Rol.findAll({
+          where: where(
+            fn("unaccent", col("rol")),
+            {
+              [Op.iLike]: `%${busqueda}%`  // iLike = case-insensitive
+            }
+          )
+        });
+        busqueda = [];
+        for (let index = 0; index < rol.length; index++) {
+          const { id_rol } = rol[index];
+          busqueda.push(id_rol);
+        }
+      }
+      if (filtro === 'id_empresa') {
+        const empresa = await Rol.findAll({
+          where: where(
+            fn("unaccent", col("empresa")),
+            {
+              [Op.iLike]: `%${busqueda}%`  // iLike = case-insensitive
+            }
+          )
+        });
+        busqueda = [];
+        for (let index = 0; index < empresa.length; index++) {
+          const { id_empresa } = empresa[index];
+          busqueda.push(id_empresa);
+        }
+      }
+
+      result = await Usuario.findAndCountAll({
+        where: {
+          [filtro]: filtro === 'nombre'
+            ? where(
+              fn(
+                "unaccent",
+                fn(
+                  "concat",
+                  col("apellido_paterno"),
+                  " ",
+                  col("apellido_materno"),
+                  " ",
+                  col("nombres")
+                )
+              ),
+              {
+                [Op.iLike]: `%${busqueda}%`
+              }
+            )     // búsquedas parciales
+            : filtro === 'id_rol'
+              ? { [Op.in]: busqueda }             // arreglo de ids
+              : busqueda,                         // coincidencia exacta
+        },
+        order: [['apellido_paterno', 'DESC']],
+        limit,
+        offset,
+        include: [{
+          model: Rol,
+          as: 'rol',
+          attributes: ['rol']
+        },
+        {
+          model: Empresa,
+          as: 'empresa',
+          attributes: ['empresa']
+        }]
+      });
+    } else {
+      result = await Usuario.findAndCountAll({
+        order: [['apellido_paterno', 'DESC']],
+        limit,
+        offset,
+        include: [{
+          model: Rol,
+          as: 'rol',
+          attributes: ['rol']
+        },
+        {
+          model: Empresa,
+          as: 'empresa',
+          attributes: ['empresa']
+        }]
+      });
+    }
+
+    return {
+      usuarios: result.rows,              // Lista de usuarios paginados
+      total: result.count,             // Total de usuarios sin paginación
+      totalPaginas: Math.ceil(result.count / limit), // Total de páginas
+      paginaActual: Math.floor(offset / limit) + 1   // Página actual
+    };
   }
 
   public async agregarUsuario(data: any) {
@@ -65,7 +176,7 @@ export class UsuarioController {
     const params = await data;
     const { id_usuario } = params;
     await Usuario.update({
-      estatus:0
+      estatus: 0
     }, { where: { id_usuario } });
 
     return `Contraseña del usuario ${id_usuario} actualizada correctamente`;
@@ -75,7 +186,7 @@ export class UsuarioController {
     const params = await data;
     const { id_usuario } = params;
     await Usuario.update({
-      estatus:1
+      estatus: 1
     }, { where: { id_usuario } });
 
     return `Contraseña del usuario ${id_usuario} actualizada correctamente`;

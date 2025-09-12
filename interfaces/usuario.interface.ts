@@ -10,7 +10,8 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class UsuarioInterface {
     public async obtenerUsuarios(req: Request, res: Response) {
         try {
-            let resultado = await _USUARIO_CONTROLLER.obtenerUsuarios();
+            var params = _UtilRequest.getParams(req);
+            let resultado = await _USUARIO_CONTROLLER.obtenerUsuarios(params);
             return res.status(200).json({
                 success: true,
                 data: resultado

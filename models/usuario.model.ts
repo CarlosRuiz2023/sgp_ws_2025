@@ -55,11 +55,11 @@ const UsuarioModel = async () => {
     timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
 
-  Rol.hasMany(Usuario,{foreignKey:'id_rol'});
-  Usuario.belongsTo(Rol,{foreignKey:'id_rol'});
+  Rol.hasMany(Usuario,{foreignKey:'id_rol', as : 'usuarios'});
+  Usuario.belongsTo(Rol,{foreignKey:'id_rol', as : 'rol'});
   
-  Empresa.hasMany(Usuario,{foreignKey:'id_empresa'});
-  Usuario.belongsTo(Empresa,{foreignKey:'id_empresa'});
+  Empresa.hasMany(Usuario,{foreignKey:'id_empresa', as : 'usuarios'});
+  Usuario.belongsTo(Empresa,{foreignKey:'id_empresa', as : 'empresa'});
 }
 export{
   UsuarioModel,

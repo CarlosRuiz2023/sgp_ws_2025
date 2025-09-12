@@ -6,6 +6,8 @@ import AuthRoutes from "../routes/auth.routes";
 import ObraRoutes from "../routes/obra.routes";
 import ColoniaRoutes from "../routes/colonia.routes";
 import UploadRoutes from "../routes/upload.routes";
+import RolRoutes from "../routes/rol.routes";
+import EmpresaRoutes from "../routes/empresa.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
@@ -13,5 +15,7 @@ export var AppRouting = [
     router.use('/auth',AuthRoutes),
     router.use('/obra',ObraRoutes),
     router.use('/colonia',ColoniaRoutes),
-    router.use('/upload',UploadRoutes)
+    router.use('/upload',UploadRoutes),
+    router.use('/rol',RolRoutes),
+    router.use('/empresa',EmpresaRoutes)
 ];

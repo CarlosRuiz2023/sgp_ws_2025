@@ -1,6 +1,9 @@
 import { col, fn, Op, where } from "sequelize";
 import { Colonia } from "../models/colonia.model";
 import { Obra } from "../models/obra.model";
+import { UtilFecha } from "../utils/UtilFecha";
+
+const _Util_Fecha = new UtilFecha();
 
 export class ObraController {
 
@@ -52,7 +55,7 @@ export class ObraController {
               ? { [Op.in]: busqueda }             // arreglo de ids
               : busqueda,                         // coincidencia exacta
         },
-        order: [['id_obra', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         limit,
         offset,
         include: [{
@@ -63,7 +66,7 @@ export class ObraController {
       });
     } else {
       result = await Obra.findAndCountAll({
-        order: [['id_obra', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         limit,
         offset,
         include: [{
@@ -88,7 +91,9 @@ export class ObraController {
     const nueva_obra = await Obra.create({
       id_colonia,
       calle,
-      tramo
+      tramo,
+      createdAt: _Util_Fecha.DateNow(),
+      updatedAt: _Util_Fecha.DateNow()
     });
 
     const obra_recuperada = await Obra.findByPk(nueva_obra.id_obra, {
@@ -110,7 +115,8 @@ export class ObraController {
       calle,
       traza_du,
       tramo,
-      finiquito
+      finiquito,
+      updatedAt: _Util_Fecha.DateNow()
     }, { where: { id_obra } });
 
     return `Obra ${id_obra} actualizada correctamente`;
