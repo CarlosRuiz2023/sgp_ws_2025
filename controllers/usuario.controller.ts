@@ -48,7 +48,7 @@ export class UsuarioController {
         }
       }
       if (filtro === 'id_empresa') {
-        const empresa = await Rol.findAll({
+        const empresa = await Empresa.findAll({
           where: where(
             fn("unaccent", col("empresa")),
             {
@@ -82,8 +82,20 @@ export class UsuarioController {
                 [Op.iLike]: `%${busqueda}%`
               }
             )     // búsquedas parciales
+            : filtro === 'correo'
+            ? where(
+              fn(
+                "unaccent",
+                col("correo")
+              ),
+              {
+                [Op.iLike]: `%${busqueda}%`
+              }
+            )     // búsquedas parciales
             : filtro === 'id_rol'
-              ? { [Op.in]: busqueda }             // arreglo de ids
+              ? { [Op.in]: busqueda }    
+            : filtro === 'id_empresa'
+              ? { [Op.in]: busqueda }           // arreglo de ids
               : busqueda,                         // coincidencia exacta
         },
         order: [['apellido_paterno', 'DESC']],
