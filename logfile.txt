@@ -1,3 +1,9 @@
 [23-09-2025 14:17:33] ERROR: Error durante la ejecución de obtenerUsuarios: no existe la columna «empresa»
 [23-09-2025 14:17:37] ERROR: Error durante la ejecución de obtenerUsuarios: no existe la columna «empresa»
 [23-09-2025 14:18:03] ERROR: Error durante la ejecución de obtenerUsuarios: no existe la columna «empresa»
+[26-09-2025 07:58:15] ERROR: Error durante la ejecución de obtenerComites: obra is not associated to obra!
+[26-09-2025 07:58:45] ERROR: Error durante la ejecución de obtenerComites: obra is not associated to obra!
+[26-09-2025 08:12:04] ERROR: Error durante la ejecución de obtenerComites: obra is not associated to obra!
+[26-09-2025 08:12:52] ERROR: Error durante la ejecución de obtenerComites: Cannot read properties of undefined (reading 'findAndCountAll')
+[26-09-2025 08:23:42] ERROR: Error durante la ejecución de obtenerComites: Cannot read properties of undefined (reading 'findAndCountAll')
+[26-09-2025 08:31:02] ERROR: Error durante la ejecución de agregarComite: Cannot read properties of undefined (reading 'findAll')

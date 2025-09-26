@@ -8,6 +8,7 @@ import ColoniaRoutes from "../routes/colonia.routes";
 import UploadRoutes from "../routes/upload.routes";
 import RolRoutes from "../routes/rol.routes";
 import EmpresaRoutes from "../routes/empresa.routes";
+import ComiteRoutes from "../routes/comite.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
@@ -17,5 +18,6 @@ export var AppRouting = [
     router.use('/colonia',ColoniaRoutes),
     router.use('/upload',UploadRoutes),
     router.use('/rol',RolRoutes),
-    router.use('/empresa',EmpresaRoutes)
+    router.use('/empresa',EmpresaRoutes),
+    router.use('/comite',ComiteRoutes)
 ];

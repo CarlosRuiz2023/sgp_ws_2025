@@ -47,14 +47,14 @@ const ComiteModel = async () => {
   }, {
     tableName: 'tbl_comites',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
-  Obra.hasMany(Comite, { foreignKey: 'id_obra' });
-  Comite.belongsTo(Obra, { foreignKey: 'id_obra' });
+  Obra.hasMany(Comite, { foreignKey: 'id_obra', as : 'comites' });
+  Comite.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obras' });
 
-  Usuario.hasMany(Comite, { foreignKey: 'id_usuario' });
-  Comite.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+  Usuario.hasMany(Comite, { foreignKey: 'id_usuario', as : 'comites' });
+  Comite.belongsTo(Usuario, { foreignKey: 'id_usuario', as : 'usuario' });
 }
 export{
   ComiteModel,
