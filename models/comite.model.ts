@@ -51,7 +51,7 @@ const ComiteModel = async () => {
   });
   
   Obra.hasMany(Comite, { foreignKey: 'id_obra', as : 'comites' });
-  Comite.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obras' });
+  Comite.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obra' });
 
   Usuario.hasMany(Comite, { foreignKey: 'id_usuario', as : 'comites' });
   Comite.belongsTo(Usuario, { foreignKey: 'id_usuario', as : 'usuario' });

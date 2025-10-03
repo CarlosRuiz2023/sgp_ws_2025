@@ -124,9 +124,9 @@ export class ComiteController {
       costo,
       fecha_creacion: _Util_Fecha.DateNow()
     });
-    const comite_recuperado = null;
+    //const comite_recuperado = null;
 
-    /* const comite_recuperado = await Obra.findByPk(nuevo_comite.id_comite, {
+    const comite_recuperado = await Comite.findByPk(nuevo_comite.id_comite, {
       include: [{
         model: Obra,
         as: 'obra',
@@ -135,10 +135,10 @@ export class ComiteController {
       {
         model: Usuario,
         as: 'usuario',
-        attributes: ['nombre', 'apellido_paterno', 'apellido_materno']
+        attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
       }
       ]
-    }); */
+    });
 
     return comite_recuperado;
   }
