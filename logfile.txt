@@ -7,3 +7,5 @@
 [26-09-2025 08:12:52] ERROR: Error durante la ejecución de obtenerComites: Cannot read properties of undefined (reading 'findAndCountAll')
 [26-09-2025 08:23:42] ERROR: Error durante la ejecución de obtenerComites: Cannot read properties of undefined (reading 'findAndCountAll')
 [26-09-2025 08:31:02] ERROR: Error durante la ejecución de agregarComite: Cannot read properties of undefined (reading 'findAll')
+[07-10-2025 10:03:21] ERROR: Error durante la ejecución de obtenerComites: no existe la columna usuario.nombre
+[07-10-2025 10:04:03] ERROR: Error durante la ejecución de obtenerComites: no existe la columna comite.updatedAt

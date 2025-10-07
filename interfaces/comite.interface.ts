@@ -43,15 +43,11 @@ export class ComiteInterface {
 
     public async agregarComite(req: Request, res: Response) {
         try {
-            //var params = await _UtilRequest.getParams(req);
-            _UTIL_JWT.comprobarJWT(res, req, async () => {
-                let resultado = await _COMITE_CONTROLLER.agregarComite(req);
-                return res.status(200).json({
-                    success: true,
-                    data: resultado
-                });
+            let resultado = await _COMITE_CONTROLLER.agregarComite(req);
+            return res.status(200).json({
+                success: true,
+                data: resultado
             });
-            return null;
         } catch (error: any) {
             console.log(error);
             _UTIL_LOG_ERROR.escribirErrorEnLog('Error durante la ejecución de agregarComite: ' + error.message);

@@ -16,8 +16,8 @@ export class UtilJwt {
             return "";
         }
     }
-    public async comprobarJWT(res: Response, req: Request | any, next: NextFunction) {
-        const token = req.rawHeaders[1];
+    public async comprobarJWT(req: Request | any, res: Response, next: NextFunction) {
+        const token = req.header('Authorization')?.replace('Bearer ', '');
 
         if (!token) {
             return res.status(400).json({
@@ -29,29 +29,28 @@ export class UtilJwt {
         }
 
         try {
-            const payload = jwt.verify(token, process.env.SECRETORPRIVATEKEY || "Est03sMyPublick3y23@913");
+            const payload = jwt.verify(
+                token,
+                process.env.SECRETORPRIVATEKEY || "Est03sMyPublick3y23@913"
+            );
             const { id_usuario }: any = payload;
 
-            //leer el usuario que corresponde al uid
             const usuario = await Usuario.findByPk(id_usuario);
 
             if (!usuario) {
-                console.log("Token no valido - usuario no existe DB");
                 return res.status(401).json({
                     ok: false,
                     results: {
-                        msg: "Token no valido",
+                        msg: "Token no valido - usuario no existe DB",
                     },
                 });
             }
 
-            //Verificar si el uid tiene estado en true
             if (usuario.estatus !== 1) {
-                console.log("Token no valido - estatus del usuario no activo");
                 return res.status(401).json({
                     ok: false,
                     results: {
-                        msg: "Token no valido - usuario con estatus:false",
+                        msg: "Token no valido - usuario inactivo",
                     },
                 });
             }
@@ -59,8 +58,7 @@ export class UtilJwt {
             req.body.usuario = usuario;
             next();
         } catch (error) {
-            //console.log(error);
-            res.status(401).json({
+            return res.status(401).json({
                 ok: false,
                 results: {
                     msg: "Token no valido",

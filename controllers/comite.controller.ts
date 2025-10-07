@@ -20,7 +20,7 @@ export class ComiteController {
       {
         model: Usuario,
         as: 'usuario',
-        attributes: ['nombre', 'apellido_paterno', 'apellido_materno']
+        attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
       }
       ]
     });
@@ -59,7 +59,7 @@ export class ComiteController {
               ? { [Op.in]: busqueda }             // arreglo de ids
               : busqueda,                         // coincidencia exacta
         },
-        order: [['updatedAt', 'DESC']],
+        order: [['id_comite', 'DESC']],
         limit,
         offset,
         include: [{
@@ -70,13 +70,13 @@ export class ComiteController {
         {
           model: Usuario,
           as: 'usuario',
-          attributes: ['nombre', 'apellido_paterno', 'apellido_materno']
+          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
         }
         ]
       });
     } else {
       result = await Comite.findAndCountAll({
-        order: [['updatedAt', 'DESC']],
+        order: [['id_comite', 'DESC']],
         limit,
         offset,
         include: [{
@@ -87,7 +87,7 @@ export class ComiteController {
         {
           model: Usuario,
           as: 'usuario',
-          attributes: ['nombre', 'apellido_paterno', 'apellido_materno']
+          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
         }
         ]
       });
