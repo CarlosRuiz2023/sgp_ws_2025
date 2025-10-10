@@ -19,7 +19,8 @@ const EstimacionModel = async () => {
       allowNull: false,
     },
     id_obra: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
     estimacion:{
       type:DataTypes.STRING
@@ -48,7 +49,7 @@ const EstimacionModel = async () => {
   }, {
     tableName: 'tbl_estimaciones',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
   Obra.hasMany(Estimacion, { foreignKey: 'id_obra' });

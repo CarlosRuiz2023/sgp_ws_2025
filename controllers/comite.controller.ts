@@ -105,8 +105,6 @@ export class ComiteController {
     const params = await data;
     const { id_obra, tipo, punto, costo, usuario } = params.body;
     const { id_usuario } = usuario;
-    console.log(params.body);
-
     let sesion = 1;
     try {
       const comites = await Comite.findAll({ where: { id_obra } });

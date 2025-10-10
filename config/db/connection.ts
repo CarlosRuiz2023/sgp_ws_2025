@@ -10,6 +10,8 @@ import { AccesoModel } from '../../models/acceso.model';
 import { ColoniaModel } from '../../models/colonia.model';
 import { ObraModel} from '../../models/obra.model';
 import { ComiteModel } from '../../models/comite.model';
+import { EstimacionModel } from '../../models/estimacion.model';
+import { ContratoModel } from '../../models/contrato.model';
 
 let dbPostgres: Sequelize;
 
@@ -33,6 +35,8 @@ const initConnections = async () => {
   ColoniaModel();
   ObraModel();
   ComiteModel();
+  EstimacionModel();
+  ContratoModel();
 
   console.log("Conexiones inicializadas correctamente.");
 };

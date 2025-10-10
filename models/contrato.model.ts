@@ -42,16 +42,21 @@ const ContratoModel = async () => {
   }, {
     tableName: 'tbl_contratos',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
-  Obra.hasMany(Contrato, { foreignKey: 'id_obra' });
-  Contrato.belongsTo(Obra, { foreignKey: 'id_obra' });
+  Obra.hasMany(Contrato, { foreignKey: 'id_obra', as : 'contratos' });
+  Contrato.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obra' });
 
-  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario_contratista' });
-  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario_supervisor' });
-  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario' });
-  Contrato.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario', as : 'contratos' });
+  Contrato.belongsTo(Usuario, { foreignKey: 'id_usuario', as : 'usuario' });
+
+  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario', as : 'contratistas' });
+  Contrato.belongsTo(Usuario, { foreignKey: 'id_usuario_contratista', as : 'contratista' });
+
+  Usuario.hasMany(Contrato, { foreignKey: 'id_usuario', as : 'supervisores' });
+  Contrato.belongsTo(Usuario, { foreignKey: 'id_usuario_supervisor', as : 'supervisor' });
+  
 }
 export{
   ContratoModel,

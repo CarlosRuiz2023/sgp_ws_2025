@@ -6,6 +6,7 @@ import path from "path";
 
 import { UtilArchivo } from "../utils/UtilArchivos";
 import { Obra } from "../models/obra.model";
+import { Estimacion } from "../models/estimacion.model";
 
 const _Util_Archivo = new UtilArchivo();
 
@@ -33,10 +34,10 @@ export class UploadController {
           return `No existe un candidato con el id ${id}`;
         }
         break;
-      case "otro":
-        modelo = await Obra.findOne({
+      case "estimaciones":
+        modelo = await Estimacion.findOne({
           where: {
-            id_obra: id,
+            id_estimacion: id,
           },
         });
         if (!modelo) {
@@ -47,13 +48,30 @@ export class UploadController {
         return "Se me olvido validar esto";
     }
     // Limpiar imágenes previas
-    if (modelo.dataValues.traza_du) {
+    if (coleccion==="obras") {
       const pathImagen = path.join(
         __dirname,
         "../../", // Retrocede dos niveles desde la carpeta actual
         "uploads",
         coleccion,
         modelo.dataValues.traza_du
+      );
+      console.log(pathImagen);
+      if (fs.existsSync(pathImagen)) {
+        try {
+          return res.sendFile(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+    if (coleccion==="estimaciones") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        modelo.dataValues.estimacion
       );
       console.log(pathImagen);
       if (fs.existsSync(pathImagen)) {
@@ -74,7 +92,7 @@ export class UploadController {
   }
 
   public async actualizarArchivo(req: Request) {
-    const { id, coleccion } = req.params;
+    const { id, coleccion } = req.params; 
 
     let modelo: any;
 
@@ -86,24 +104,24 @@ export class UploadController {
           },
         });
         if (!modelo) {
-          return `No existe un usuario con el id ${id}`;
+          return `No existe una obra con el id ${id}`;
         }
         break;
-      case "otro":
-        modelo = await Obra.findOne({
+      case "estimaciones":
+        modelo = await Estimacion.findOne({
           where: {
-            id_obra: id,
+            id_estimacion: id,
           },
         });
         if (!modelo) {
-          return `No existe un producto con el id ${id}`;
+          return `No existe una estimacion con el id ${id}`;
         }
         break;
       default:
         return "Se me olvido validar esto";
     }
     // Limpiar imágenes previas
-    if (modelo.dataValues.traza_du) {
+    if (modelo.dataValues.traza_du && coleccion==="obras") {
       const pathImagen = path.join(
         __dirname,
         "../../", // Retrocede dos niveles desde la carpeta actual
@@ -120,10 +138,27 @@ export class UploadController {
       }
     }
 
+    if (modelo.dataValues.estimacion && coleccion==="estimaciones") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        modelo.dataValues.estimacion
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
     const archivos: any = req.files as fileUpload.FileArray;
 
     const nombre = await _Util_Archivo.subirArchivo(archivos, ["pdf","PDF"], coleccion,id);
-    modelo.dataValues.traza_du = nombre;
+    //modelo.dataValues.traza_du = nombre;
 
     if (coleccion === "obras") {
       await Obra.update(
@@ -136,9 +171,20 @@ export class UploadController {
       );
       //await modelo.save();
     }
-    if (coleccion === "otro") {
-      await modelo.save();
+    if (coleccion === "estimaciones") {
+      await Estimacion.update(
+        { estimacion: nombre },
+        {
+          where: {
+            id_estimacion: id,
+          },
+        }
+      );
+      //await modelo.save();
     }
+    /* if (coleccion === "otro") {
+      await modelo.save();
+    } */
     return modelo;
   }
 }
