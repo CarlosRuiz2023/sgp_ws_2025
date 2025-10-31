@@ -11,6 +11,7 @@ import EmpresaRoutes from "../routes/empresa.routes";
 import ComiteRoutes from "../routes/comite.routes";
 import EstimacionRoutes from "../routes/estimacion.routes";
 import ContratoRoutes from "../routes/contrato.routes";
+import SolicitudRoutes from "../routes/solicitud.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
@@ -24,4 +25,5 @@ export var AppRouting = [
     router.use('/comite',ComiteRoutes),
     router.use('/estimacion',EstimacionRoutes),
     router.use('/contrato',ContratoRoutes),
+    router.use('/solicitud',SolicitudRoutes),
 ];
