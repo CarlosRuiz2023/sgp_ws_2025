@@ -19,3 +19,15 @@
 [31-10-2025 10:13:04] ERROR: Error durante la ejecución de obtenerSolicitudes: no existe la columna solicitud.id_contrato
 [31-10-2025 10:15:30] ERROR: Error durante la ejecución de obtenerSolicitudes: no existe la columna solicitud.id_contrato
 [31-10-2025 12:13:02] ERROR: Error durante la ejecución de obtenerSolicitudes: no existe la columna solicitud.id_contrato
+[11-11-2025 11:12:56] ERROR: Error durante la ejecución de obtenerObras: Operation timeout
+[11-11-2025 11:12:56] ERROR: Error durante la ejecución de obtenerUsuarios: Operation timeout
+[11-11-2025 11:12:56] ERROR: Error durante la ejecución de obtenerUsuarios: Operation timeout
+[11-11-2025 13:05:05] ERROR: Error durante la ejecución de agregarOficioSapal: el valor nulo en la columna «id_usuario_solicitud» de la relación «tbl_solicitudes» viola la restricción de no nulo
+[11-11-2025 13:06:05] ERROR: Error durante la ejecución de agregarOficioSapal: el valor nulo en la columna «oficio_de_recibido» de la relación «tbl_oficio_sapal» viola la restricción de no nulo
+[11-11-2025 13:07:00] ERROR: Error durante la ejecución de agregarOficioSapal: usuario is associated to oficio_sapal multiple times. To identify the correct association, you must use the 'as' keyword to specify the alias of the association you want to include.
+[11-11-2025 13:08:20] ERROR: Error durante la ejecución de obtenerOficios: usuario is associated to solicitud multiple times. To identify the correct association, you must use the 'as' keyword to specify the alias of the association you want to include.
+[11-11-2025 13:11:36] ERROR: Error durante la ejecución de actualizarOficioSapal: no existe la columna «id_oficio_sapal»
+[11-11-2025 13:25:07] ERROR: Error durante la ejecución de mostrarArchivo: The "path" argument must be of type string. Received null
+[11-11-2025 13:55:23] ERROR: Error durante la ejecución de mostrarArchivo: The "path" argument must be of type string. Received null
+[11-11-2025 13:56:55] ERROR: Error durante la ejecución de mostrarArchivo: The "path" argument must be of type string. Received null
+[11-11-2025 13:58:18] ERROR: Error durante la ejecución de mostrarArchivo: The "path" argument must be of type string. Received null

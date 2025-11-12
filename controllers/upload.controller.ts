@@ -9,6 +9,7 @@ import { UtilFecha } from "../utils/UtilFecha";
 import { Obra } from "../models/obra.model";
 import { Estimacion } from "../models/estimacion.model";
 import { Solicitud } from "../models/solicitud.model";
+import { OficioSapal } from "../models/oficioSapal.model";
 
 const _Util_Fecha = new UtilFecha();
 const _Util_Archivo = new UtilArchivo();
@@ -58,6 +59,16 @@ export class UploadController {
           return `No existe la solicitud con el id ${id}`;
         }
         break;
+      case "oficioSapal":
+        modelo = await OficioSapal.findOne({
+          where: {
+            id_oficio_sapal: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe el oficio sapal con el id ${id}`;
+        }
+        break;
       default:
         return "Se me olvido validar esto";
     }
@@ -102,8 +113,11 @@ export class UploadController {
           __dirname,
           "../../", // Retrocede dos niveles desde la carpeta actual
           "uploads",
-          coleccion,modelo.dataValues.solicitud
+          coleccion,
+          campo,
+          modelo.dataValues.solicitud
         );
+        console.log(pathImagen);
         if (fs.existsSync(pathImagen)) {
           try {
             return res.sendFile(pathImagen);
@@ -118,6 +132,7 @@ export class UploadController {
           "../../", // Retrocede dos niveles desde la carpeta actual
           "uploads",
           coleccion,
+          campo,
           modelo.dataValues.laboratorio
         );
         if (fs.existsSync(pathImagen)) {
@@ -134,7 +149,46 @@ export class UploadController {
           "../../", // Retrocede dos niveles desde la carpeta actual
           "uploads",
           coleccion,
+          campo,
           modelo.dataValues.mecanica_de_suelos
+        );
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+    }
+
+    if (coleccion === "oficioSapal") {
+      if (campo === 'recibido') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.oficio_de_recibido
+        );
+        console.log(pathImagen);
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+      if (campo === 'revisado') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.oficio_de_revision
         );
         if (fs.existsSync(pathImagen)) {
           try {
@@ -188,7 +242,17 @@ export class UploadController {
           },
         });
         if (!modelo) {
-          return `No existe una estimacion con el id ${id}`;
+          return `No existe una solicitud con el id ${id}`;
+        }
+        break;
+      case "oficioSapal":
+        modelo = await OficioSapal.findOne({
+          where: {
+            id_oficio_sapal: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe un Oficio a Sapal con el id ${id}`;
         }
         break;
       default:
@@ -235,6 +299,7 @@ export class UploadController {
         "../../", // Retrocede dos niveles desde la carpeta actual
         "uploads",
         coleccion,
+        campo,
         modelo.dataValues.solicitud
       );
       if (fs.existsSync(pathImagen)) {
@@ -252,6 +317,7 @@ export class UploadController {
         "../../", // Retrocede dos niveles desde la carpeta actual
         "uploads",
         coleccion,
+        campo,
         modelo.dataValues.laboratorio
       );
       if (fs.existsSync(pathImagen)) {
@@ -269,7 +335,44 @@ export class UploadController {
         "../../", // Retrocede dos niveles desde la carpeta actual
         "uploads",
         coleccion,
+        campo,
         modelo.dataValues.mecanica_de_suelos
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    if (modelo.dataValues.oficio_de_recibido && coleccion === "oficioSapal" && campo === "recibido") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.oficio_de_recibido
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    if (modelo.dataValues.oficio_de_revisado && coleccion === "oficioSapal" && campo === "revisado") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.oficio_de_revision
       );
       if (fs.existsSync(pathImagen)) {
         try {
@@ -282,7 +385,12 @@ export class UploadController {
 
     const archivos: any = req.files as fileUpload.FileArray;
 
-    const nombre = await _Util_Archivo.subirArchivo(archivos, ["pdf", "PDF"], coleccion, id);
+    let nombre: string | any;
+    if (campo) {
+      nombre = await _Util_Archivo.subirArchivo(archivos, ["pdf", "PDF"], coleccion + "/" + campo, id);
+    } else {
+      nombre = await _Util_Archivo.subirArchivo(archivos, ["pdf", "PDF"], coleccion, id);
+    }
     //modelo.dataValues.traza_du = nombre;
 
     if (coleccion === "obras") {
@@ -312,9 +420,10 @@ export class UploadController {
     if (coleccion === "solicitudes") {
       if (campo === "solicitud") {
         await Solicitud.update(
-          { solicitud: nombre,
+          {
+            solicitud: nombre,
             fecha_solicitud: _Util_Fecha.DateNow()
-           },
+          },
           {
             where: {
               id_solicitud: id,
@@ -325,9 +434,10 @@ export class UploadController {
       }
       if (campo === "laboratorio") {
         await Solicitud.update(
-          { laboratorio: nombre,
+          {
+            laboratorio: nombre,
             fecha_laboratorio: _Util_Fecha.DateNow()
-           },
+          },
           {
             where: {
               id_solicitud: id,
@@ -338,9 +448,10 @@ export class UploadController {
       }
       if (campo === "mecanica_de_suelos") {
         await Solicitud.update(
-          { mecanica_de_suelos: nombre,
+          {
+            mecanica_de_suelos: nombre,
             fecha_ms: _Util_Fecha.DateNow()
-           },
+          },
           {
             where: {
               id_solicitud: id,
@@ -349,6 +460,38 @@ export class UploadController {
         );
       }
       modelo.dataValues.mecanica_de_suelos = nombre;
+      //await modelo.save();
+    }
+
+    if (coleccion === "oficioSapal") {
+      console.log("entro");
+      if (campo === "recibido") {
+        await OficioSapal.update(
+          {
+            oficio_de_recibido: nombre
+          },
+          {
+            where: {
+              id_oficio_sapal: id,
+            },
+          }
+        );
+        modelo.dataValues.oficio_de_recibido = nombre;
+      }
+      if (campo === "revisado") {
+        console.log("hasta aqui todo bien");
+        await OficioSapal.update(
+          {
+            oficio_de_revision: nombre,
+          },
+          {
+            where: {
+              id_oficio_sapal: id,
+            },
+          }
+        );
+        modelo.dataValues.id_oficio_revision = nombre;
+      }
       //await modelo.save();
     }
     /* if (coleccion === "otro") {

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { dbPostgres } from '../config/db/connection';
 import { Obra } from './obra.model';
 import { Usuario } from './usuario.model';
-let OficioSapal:any;
+let OficioSapal: any;
 
 const OficioSapalModel = async () => {
 
@@ -25,36 +25,37 @@ const OficioSapalModel = async () => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    oficio_de_recibido:{
-      type:DataTypes.STRING,
-      allowNull: false,
+    oficio_de_recibido: {
+      type: DataTypes.STRING,
     },
-    observaciones:{
-      type:DataTypes.STRING
+    observaciones: {
+      type: DataTypes.STRING
     },
-    oficio_de_revision:{
-      type:DataTypes.STRING
+    oficio_de_revision: {
+      type: DataTypes.STRING
     },
-    fecha_de_entrega:{
-      type:DataTypes.DATE
+    fecha_de_entrega: {
+      type: DataTypes.DATE
     },
-    estatus:{
-      type:DataTypes.INTEGER
+    estatus: {
+      type: DataTypes.INTEGER
     },
   }, {
     tableName: 'tbl_oficio_sapal',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
-  
-  Obra.hasMany(OficioSapal, { foreignKey: 'id_obra' });
-  OficioSapal.belongsTo(Obra, { foreignKey: 'id_obra' });
 
-  Usuario.hasMany(OficioSapal, { foreignKey: 'id_usuario' });
-  Usuario.hasMany(OficioSapal, { foreignKey: 'id_usuario_sapal' });
-  OficioSapal.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+  Obra.hasMany(OficioSapal, { foreignKey: 'id_obra', as: 'oficios_sapal' });
+  OficioSapal.belongsTo(Obra, { foreignKey: 'id_obra', as: 'obra' });
+
+  Usuario.hasMany(OficioSapal, { foreignKey: 'id_usuario', as: 'usuarios' });
+  OficioSapal.belongsTo(Usuario, { foreignKey: 'id_usuario', as: 'usuario' });
+
+  Usuario.hasMany(OficioSapal, { foreignKey: 'id_usuario_sapal', as: 'empleados_sapal' });
+  OficioSapal.belongsTo(Usuario, { foreignKey: 'id_usuario_sapal', as: 'empleado_sapal' });
 }
-export{
+export {
   OficioSapalModel,
   OficioSapal
 }

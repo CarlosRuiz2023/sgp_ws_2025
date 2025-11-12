@@ -13,6 +13,7 @@ import { ComiteModel } from '../../models/comite.model';
 import { EstimacionModel } from '../../models/estimacion.model';
 import { ContratoModel } from '../../models/contrato.model';
 import { SolicitudModel } from '../../models/solicitud.model';
+import { OficioSapalModel } from '../../models/oficioSapal.model';
 
 let dbPostgres: Sequelize;
 
@@ -39,6 +40,10 @@ const initConnections = async () => {
   EstimacionModel();
   ContratoModel();
   SolicitudModel();
+  OficioSapalModel();
+
+  // Establecer las asociaciones entre los modelos si es necesario
+  // Por ejemplo: UsuarioModel.belongsTo(RolModel, { foreignKey: 'id_rol' });
 
   console.log("Conexiones inicializadas correctamente.");
 };
