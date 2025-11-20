@@ -24,7 +24,6 @@ const FirmaModel = async () => {
     },
     plano:{
       type:DataTypes.STRING,
-      allowNull: false,
     },
     fecha_de_firma:{
       type:DataTypes.DATE
@@ -35,14 +34,14 @@ const FirmaModel = async () => {
   }, {
     tableName: 'tbl_firmas',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
-  Obra.hasMany(Firma, { foreignKey: 'id_obra' });
-  Firma.belongsTo(Obra, { foreignKey: 'id_obra' });
+  Obra.hasMany(Firma, { foreignKey: 'id_obra', as : 'firmas' });
+  Firma.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obra' });
 
-  Usuario.hasMany(Firma, { foreignKey: 'id_usuario' });
-  Firma.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+  Usuario.hasMany(Firma, { foreignKey: 'id_usuario', as : 'firmadores' });
+  Firma.belongsTo(Usuario, { foreignKey: 'id_usuario', as : 'firmador' });
 }
 export{
   FirmaModel,

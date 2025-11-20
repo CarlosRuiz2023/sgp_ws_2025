@@ -48,15 +48,17 @@ const EntregaModel = async () => {
   }, {
     tableName: 'tbl_entregas',
     schema: 'public',
-    timestamps: true // si tu tabla no usa createdAt / updatedAt
+    timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
-  Obra.hasMany(Entrega, { foreignKey: 'id_obra' });
-  Entrega.belongsTo(Obra, { foreignKey: 'id_obra' });
+  Obra.hasMany(Entrega, { foreignKey: 'id_obra', as : 'entregas' });
+  Entrega.belongsTo(Obra, { foreignKey: 'id_obra', as : 'obra' });
 
-  Usuario.hasMany(Entrega, { foreignKey: 'id_usuario_fisico' });
-  Usuario.hasMany(Entrega, { foreignKey: 'id_usuario_administrativo' });
-  Entrega.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+  Usuario.hasMany(Entrega, { foreignKey: 'id_usuario_fisico', as : 'fisicos' });
+  Entrega.belongsTo(Usuario, { foreignKey: 'id_usuario_fisico', as : 'fisico' });
+
+  Usuario.hasMany(Entrega, { foreignKey: 'id_usuario_administrativo', as : 'administrativos' });
+  Entrega.belongsTo(Usuario, { foreignKey: 'id_usuario_administrativo', as : 'administrativo' });
 }
 export{
   EntregaModel,

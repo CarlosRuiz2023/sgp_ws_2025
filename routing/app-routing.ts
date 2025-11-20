@@ -13,6 +13,8 @@ import EstimacionRoutes from "../routes/estimacion.routes";
 import ContratoRoutes from "../routes/contrato.routes";
 import SolicitudRoutes from "../routes/solicitud.routes";
 import OficioSapalRoutes from "../routes/oficioSapal.routes";
+import EntregaRoutes from "../routes/entrega.routes";
+import FirmaRoutes from "../routes/firma.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
@@ -28,4 +30,6 @@ export var AppRouting = [
     router.use('/contrato',ContratoRoutes),
     router.use('/solicitud',SolicitudRoutes),
     router.use('/oficio-sapal',OficioSapalRoutes),
+    router.use('/entrega',EntregaRoutes),
+    router.use('/firma',FirmaRoutes)
 ];

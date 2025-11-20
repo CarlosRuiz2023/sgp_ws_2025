@@ -2,13 +2,13 @@ import { UtilFecha } from "../utils/UtilFecha";
 import { Usuario } from "../models/usuario.model";
 import { Obra } from "../models/obra.model";
 import { col, fn, Op, where } from "sequelize";
-import { Entrega } from "../models/entrega.model";
+import { Firma } from "../models/firma.model";
 
 const _Util_Fecha = new UtilFecha();
 
-export class EntregaController {
+export class FirmaController {
 
-  public async obtenerEntregas(data: any) {
+  public async obtenerFirmas(data: any) {
     const params = await data;
     const { limit, offset } = params;
     let { filtro, busqueda } = params;
@@ -53,33 +53,29 @@ export class EntregaController {
         }
       }
 
-      result = await Entrega.findAndCountAll({
+      result = await Firma.findAndCountAll({
         where:
-          filtro === 'id_entrega'
-            ? { id_entrega
-              
-              : { [Op.eq]: busqueda } }
+          filtro === 'id_firma'
+            ? {
+              id_firma
+
+                : { [Op.eq]: busqueda }
+            }
             : filtro === 'id_usuario'
               ? {
                 [Op.or]: [
-                  { id_usuario_fisico: { [Op.in]: busqueda } },
-                  { id_usuario_administrativo: { [Op.in]: busqueda } },
+                  { id_usuario: { [Op.in]: busqueda } },
                 ],
               }
               : filtro === 'id_obra'
                 ? { id_obra: { [Op.in]: busqueda } }
                 : { [filtro]: busqueda },
-        order: [['fecha_fisica', 'DESC']],
+        order: [['id_firma', 'DESC']],
         limit,
         offset,
         include: [{
           model: Usuario,
-          as: 'fisico',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Usuario,
-          as: 'administrativo',
+          as: 'firmador',
           attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
         },
         {
@@ -89,18 +85,13 @@ export class EntregaController {
         }]
       });
     } else {
-      result = await Entrega.findAndCountAll({
-        order: [['fecha_fisica', 'DESC']],
+      result = await Firma.findAndCountAll({
+        order: [['id_firma', 'DESC']],
         limit,
         offset,
         include: [{
           model: Usuario,
-          as: 'fisico',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Usuario,
-          as: 'administrativo',
+          as: 'firmador',
           attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
         },
         {
@@ -112,72 +103,64 @@ export class EntregaController {
     }
 
     return {
-      entregas: result.rows,              // Lista de obras paginadas
+      firmas: result.rows,              // Lista de obras paginadas
       total: result.count,             // Total de obras sin paginación
       totalPaginas: Math.ceil(result.count / limit), // Total de páginas
       paginaActual: Math.floor(offset / limit) + 1   // Página actual
     };
   }
 
-  public async agregarEntrega(data: any) {
+  public async agregarFirma(data: any) {
     const params = await data;
-    const { id_obra, id_usuario_fisico, id_usuario_administrativo } = params;
-    const nueva_entrega = await Entrega.create({
-      id_obra,
-      id_usuario_fisico,
-      id_usuario_administrativo,
+    const { id_obra, id_usuario } = params;
+    const nueva_firma = await Firma.create({
+      id_usuario,
+      id_obra
     });
 
-    const entrega_recuperada = await Entrega.findByPk(nueva_entrega.id_entrega, {
+    const firma_recuperada = await Firma.findByPk(nueva_firma.id_firma, {
       include: [{
-          model: Usuario,
-          as: 'fisico',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Usuario,
-          as: 'administrativo',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Obra,
-          as: 'obra',
-          attributes: ['calle']
-        }]
+        model: Usuario,
+        as: 'firmador',
+        attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
+      }, {
+        model: Obra,
+        as: 'obra',
+        attributes: ['calle']
+      }]
     });
 
-    return entrega_recuperada;
+    return firma_recuperada;
   }
 
-  public async actualizarEntrega(data: any) {
+  public async actualizarFirma(data: any) {
     const params = await data;
-    const { id_entrega, id_obra, id_usuario_fisico, id_usuario_administrativo } = params;
-    await Entrega.update({
+    const { id_firma, id_obra, id_usuario } = params;
+    await Firma.update({
       id_obra,
-      id_usuario_fisico,
-      id_usuario_administrativo,
-    }, { where: { id_entrega } });
+      id_usuario
+    }, { where: { id_firma } });
 
-    return `Entrega ${id_entrega} actualizada correctamente`;
+    return `Firma ${id_firma} actualizada correctamente`;
   }
 
-  public async eliminarEntrega(data: any) {
+  public async eliminarFirma(data: any) {
     const params = await data;
-    const { id_entrega } = params;
-    await Entrega.update({
+    const { id_firma } = params;
+    await Firma.update({
       estatus: 0
-    }, { where: { id_entrega: id_entrega } });
+    }, { where: { id_firma } });
 
-    return `Entrega ${id_entrega} elimanda logicamente correctamente`;
+    return `Firma ${id_firma} elimanda logicamente correctamente`;
   }
 
-  public async activarEntrega(data: any) {
+  public async activarFirma(data: any) {
     const params = await data;
-    const { id_entrega } = params;
-    await Entrega.update({
+    const { id_firma } = params;
+    await Firma.update({
       estatus: 1
-    }, { where: { id_entrega } });
+    }, { where: { id_firma } });
 
-    return `Entrega ${id_entrega} activada logicamente correctamente`;
+    return `Firma ${id_firma} activada logicamente correctamente`;
   }
 }

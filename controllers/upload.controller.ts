@@ -10,6 +10,8 @@ import { Obra } from "../models/obra.model";
 import { Estimacion } from "../models/estimacion.model";
 import { Solicitud } from "../models/solicitud.model";
 import { OficioSapal } from "../models/oficioSapal.model";
+import { Entrega } from "../models/entrega.model";
+import { Firma } from "../models/firma.model";
 
 const _Util_Fecha = new UtilFecha();
 const _Util_Archivo = new UtilArchivo();
@@ -67,6 +69,26 @@ export class UploadController {
         });
         if (!modelo) {
           return `No existe el oficio sapal con el id ${id}`;
+        }
+        break;
+      case "entregas":
+        modelo = await Entrega.findOne({
+          where: {
+            id_entrega: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe la entrega con el id ${id}`;
+        }
+        break;
+      case "firmas":
+        modelo = await Firma.findOne({
+          where: {
+            id_firma: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe la firma con el id ${id}`;
         }
         break;
       default:
@@ -200,6 +222,97 @@ export class UploadController {
       }
     }
 
+    if (coleccion === "entregas") {
+      if (campo === 'oficio-fisico') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.oficio_fisica
+        );
+        console.log(pathImagen);
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+      if (campo === 'oficio-administrativo') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.oficio_administrativa
+        );
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+      if (campo === 'acta-fisica') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.acta_fisica
+        );
+        console.log(pathImagen);
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+      if (campo === 'acta-administrativa') {
+        const pathImagen = path.join(
+          __dirname,
+          "../../", // Retrocede dos niveles desde la carpeta actual
+          "uploads",
+          coleccion,
+          campo,
+          modelo.dataValues.acta_administrativa
+        );
+        if (fs.existsSync(pathImagen)) {
+          try {
+            return res.sendFile(pathImagen);
+          } catch (error) {
+            console.error("Error al consultar el PDF previo", error);
+          }
+        }
+      }
+    }
+
+    // Limpiar imágenes previas
+    if (coleccion === "firmas") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        modelo.dataValues.plano
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          return res.sendFile(pathImagen);
+        } catch (error) {
+          console.error("Error al consultar el PDF previo", error);
+        }
+      }
+    }
+
     const pathImagen = path.join(
       __dirname,
       "../../", // Retrocede dos niveles desde la carpeta actual
@@ -253,6 +366,26 @@ export class UploadController {
         });
         if (!modelo) {
           return `No existe un Oficio a Sapal con el id ${id}`;
+        }
+        break;
+      case "entregas":
+        modelo = await Entrega.findOne({
+          where: {
+            id_entrega: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe una entrega con el id ${id}`;
+        }
+        break;
+      case "firmas":
+        modelo = await Firma.findOne({
+          where: {
+            id_firma: id,
+          },
+        });
+        if (!modelo) {
+          return `No existe una firma con el id ${id}`;
         }
         break;
       default:
@@ -383,6 +516,96 @@ export class UploadController {
       }
     }
 
+    if (modelo.dataValues.oficio_fisica && coleccion === "entregas" && campo === "oficio-fisico") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.oficio_fisica
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    if (modelo.dataValues.oficio_administrativa && coleccion === "entregas" && campo === "oficio-administrativo") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.oficio_administrativa
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    if (modelo.dataValues.acta_fisica && coleccion === "entregas" && campo === "acta-fisica") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.acta_fisica
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    if (modelo.dataValues.acta_administrativa && coleccion === "entregas" && campo === "acta-administrativa") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        campo,
+        modelo.dataValues.acta_administrativa
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
+    // Limpiar imágenes previas
+    if (modelo.dataValues.plano && coleccion === "firmas") {
+      const pathImagen = path.join(
+        __dirname,
+        "../../", // Retrocede dos niveles desde la carpeta actual
+        "uploads",
+        coleccion,
+        modelo.dataValues.plano
+      );
+      if (fs.existsSync(pathImagen)) {
+        try {
+          fs.unlinkSync(pathImagen);
+        } catch (error) {
+          console.error("Error al borrar la imagen previa:", error);
+        }
+      }
+    }
+
     const archivos: any = req.files as fileUpload.FileArray;
 
     let nombre: string | any;
@@ -431,6 +654,7 @@ export class UploadController {
           }
         );
         modelo.dataValues.solicitud = nombre;
+        modelo.dataValues.fecha_solicitud = _Util_Fecha.DateNow();
       }
       if (campo === "laboratorio") {
         await Solicitud.update(
@@ -445,6 +669,7 @@ export class UploadController {
           }
         );
         modelo.dataValues.laboratorio = nombre;
+        modelo.dataValues.fecha_laboratorio = _Util_Fecha.DateNow();
       }
       if (campo === "mecanica_de_suelos") {
         await Solicitud.update(
@@ -460,11 +685,11 @@ export class UploadController {
         );
       }
       modelo.dataValues.mecanica_de_suelos = nombre;
+      modelo.dataValues.fecha_ms = _Util_Fecha.DateNow();
       //await modelo.save();
     }
 
     if (coleccion === "oficioSapal") {
-      console.log("entro");
       if (campo === "recibido") {
         await OficioSapal.update(
           {
@@ -479,7 +704,6 @@ export class UploadController {
         modelo.dataValues.oficio_de_recibido = nombre;
       }
       if (campo === "revisado") {
-        console.log("hasta aqui todo bien");
         await OficioSapal.update(
           {
             oficio_de_revision: nombre,
@@ -490,8 +714,84 @@ export class UploadController {
             },
           }
         );
-        modelo.dataValues.id_oficio_revision = nombre;
+        modelo.dataValues.oficio_de_revision = nombre;
       }
+      //await modelo.save();
+    }
+
+    if (coleccion === "entregas") {
+      if (campo === "oficio-fisico") {
+        await Entrega.update(
+          {
+            oficio_fisica: nombre,
+            fecha_fisica: _Util_Fecha.DateNow()
+          },
+          {
+            where: {
+              id_entrega: id,
+            },
+          }
+        );
+        modelo.dataValues.oficio_fisica = nombre;
+        modelo.dataValues.fecha_fisica = _Util_Fecha.DateNow();
+      }
+      if (campo === "oficio-administrativo") {
+        await Entrega.update(
+          {
+            oficio_administrativa: nombre,
+            fecha_administrativa: _Util_Fecha.DateNow()
+          },
+          {
+            where: {
+              id_entrega: id,
+            },
+          }
+        );
+        modelo.dataValues.oficio_administrativa = nombre;
+        modelo.dataValues.fecha_administrativa = _Util_Fecha.DateNow();
+      }
+      if (campo === "acta-fisica") {
+        await Entrega.update(
+          {
+            acta_fisica: nombre
+          },
+          {
+            where: {
+              id_entrega: id,
+            },
+          }
+        );
+        modelo.dataValues.acta_fisica = nombre;
+      }
+      if (campo === "acta-administrativa") {
+        await Entrega.update(
+          {
+            acta_administrativa: nombre,
+          },
+          {
+            where: {
+              id_entrega: id,
+            },
+          }
+        );
+        modelo.dataValues.acta_administrativa = nombre;
+      }
+      //await modelo.save();
+    }
+
+    if (coleccion === "firmas") {
+      await Firma.update(
+        { plano: nombre,
+          fecha_de_firma: _Util_Fecha.DateNow()
+         },
+        {
+          where: {
+            id_firma: id
+          },
+        }
+      );
+      modelo.dataValues.plano = nombre;
+      modelo.dataValues.fecha_de_firma = _Util_Fecha.DateNow();
       //await modelo.save();
     }
     /* if (coleccion === "otro") {
