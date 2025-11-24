@@ -45,4 +45,36 @@ export class AuthInterface {
         }
     
     }
+
+    public async desloguearUsuarioToken(req: Request, res: Response) {
+        try {
+            var params = _UtilRequest.getParams(req);
+            let resultado = await _AUTH_CONTROLLER.desloguearUsuarioToken(params);
+            return res.status(200).json({
+                success: true,
+                data: resultado
+            });
+        } catch (error:any) {
+            console.log(error);
+            _UTIL_LOG_ERROR.escribirErrorEnLog('Error durante la ejecución de desloguearUsuarioToken: ' +error.message);
+            return res.status(500).json({ success: false, data: null });
+        }
+    
+    }
+            
+    public async checkStatus(req: Request, res: Response) {
+        try {
+            var params = _UtilRequest.getParams(req);
+            let resultado = await _AUTH_CONTROLLER.checkStatus(params);
+            return res.status(200).json({
+                success: true,
+                data: resultado
+            });
+        } catch (error:any) {
+            console.log(error);
+            _UTIL_LOG_ERROR.escribirErrorEnLog('Error durante la ejecución de checkStatus: ' +error.message);
+            return res.status(500).json({ success: false, data: null });
+        }
+    
+    }
 }

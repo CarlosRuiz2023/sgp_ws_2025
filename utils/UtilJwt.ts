@@ -22,9 +22,7 @@ export class UtilJwt {
         if (!token) {
             return res.status(400).json({
                 ok: false,
-                results: {
-                    msg: "No hay token en la peticion",
-                },
+                data: "No hay token en la peticion",
             });
         }
 
@@ -40,18 +38,21 @@ export class UtilJwt {
             if (!usuario) {
                 return res.status(401).json({
                     ok: false,
-                    results: {
-                        msg: "Token no valido - usuario no existe DB",
-                    },
+                    data: "Token no valido - usuario no existe DB",
                 });
             }
 
             if (usuario.estatus !== 1) {
                 return res.status(401).json({
                     ok: false,
-                    results: {
-                        msg: "Token no valido - usuario inactivo",
-                    },
+                    data: "Token no valido - usuario inactivo",
+                });
+            }
+
+            if(usuario.token !== token){
+                return res.status(401).json({
+                    ok: false,
+                    data: "Token no valido - token no coincide",
                 });
             }
 
@@ -60,9 +61,7 @@ export class UtilJwt {
         } catch (error) {
             return res.status(401).json({
                 ok: false,
-                results: {
-                    msg: "Token no valido",
-                },
+                data: "Token no valido",
             });
         }
     }

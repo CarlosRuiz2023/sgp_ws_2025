@@ -22,7 +22,7 @@ export class AuthController {
         }
       }
     });
-    if(result.length > 4){
+    if (result.length > 4) {
       return "Usted ha alcanzado el limite de intetos pruebe dentro de 10 mins.";
     }
     if (estatus != 1) {
@@ -34,7 +34,7 @@ export class AuthController {
     // Verificar la contraseña
     const validPassword = bcryptjs.compareSync(contrasenia, contrasenia_recupearada);
     if (!validPassword) {
-      const result = await Acceso.create({
+      await Acceso.create({
         id_usuario,
         fecha_hora: _Util_Fecha.DateNow(),
         exitoso: false
@@ -43,10 +43,10 @@ export class AuthController {
     }
     // Generar el JWT
     const token = await _Util_Jwt.generarJWT(id_usuario);
-    const result1 = await Usuario.update({
+    await Usuario.update({
       token
     }, { where: { id_usuario } });
-    const result2 = await Acceso.create({
+    await Acceso.create({
       id_usuario,
       fecha_hora: _Util_Fecha.DateNow(),
       exitoso: true
@@ -58,9 +58,36 @@ export class AuthController {
   public async desloguearUsuario(data: any) {
     const params = await data;
     const { id_usuario } = params;
-    const result = await Usuario.update({
+    await Usuario.update({
       token: null
     }, { where: { id_usuario } });
     return `Usuario ${id_usuario} deslogueado correctamente`;
+  }
+
+  public async desloguearUsuarioToken(data: any) {
+    const params = await data;
+    const { usuario } = params;
+    const { id_usuario } = usuario;
+    await Usuario.update({
+      token: null
+    }, { where: { id_usuario } });
+    return `Usuario ${id_usuario} deslogueado correctamente`;
+  }
+
+  public async checkStatus(data: any) {
+    const params = await data;
+    const { usuario } = params;
+    const { id_usuario } = usuario;
+    // si quieres renovar token
+    const token = _Util_Jwt.generarJWT(id_usuario);
+    await Usuario.update({
+      token
+    }, { where: { id_usuario } });
+    const usuario_logueado = await Usuario.findByPk(id_usuario);
+
+    return {
+      token,
+      ...usuario_logueado  // <-- info del usuario
+    };
   }
 }
