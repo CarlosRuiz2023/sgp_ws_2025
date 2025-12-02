@@ -41,3 +41,12 @@
 [20-11-2025 10:23:46] ERROR: Error durante la ejecución de desloguearUsuario: WHERE parameter "id_usuario" has invalid "undefined" value
 [20-11-2025 10:24:30] ERROR: Error durante la ejecución de desloguearUsuario: WHERE parameter "id_usuario" has invalid "undefined" value
 [24-11-2025 12:04:33] ERROR: Error durante la ejecución de desloguearUsuario: la sintaxis de entrada no es válida para tipo integer: «logout»
+[24-11-2025 14:42:52] ERROR: Error durante la ejecución de loguearUsuario: no existe la columna modulo_permiso.id_usuario
+[02-12-2025 11:51:14] ERROR: Error durante la ejecución de obtenerObras: la sintaxis de entrada no es válida para tipo integer: «como sea»
+[02-12-2025 12:41:48] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[02-12-2025 12:59:59] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_usuario_fisico_fkey»
+[02-12-2025 13:00:06] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_usuario_fisico_fkey»
+[02-12-2025 13:01:24] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[02-12-2025 13:02:08] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[02-12-2025 13:11:43] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[02-12-2025 13:16:49] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»

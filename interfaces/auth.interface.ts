@@ -12,13 +12,13 @@ export class AuthInterface {
         try {
             var params = _UtilRequest.getParams(req);
             let resultado = await _AUTH_CONTROLLER.loguearUsuario(params);
-            const {token} = resultado;
+            /* const {token} = resultado;
             if(!token){
                 return res.status(401).json({
                     success: false,
                     data: resultado
                 });
-            }
+            } */
             return res.status(200).json({
                 success: true,
                 data: resultado

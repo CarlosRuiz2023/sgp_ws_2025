@@ -33,14 +33,14 @@ const ModuloPermisoModel = async () => {
     timestamps: false // si tu tabla no usa createdAt / updatedAt
   });
   
-  Modulo.hasMany(ModuloPermiso,{foreignKey:'id_modulo'});
-  ModuloPermiso.belongsTo(Modulo,{foreignKey:'id_modulo'});
+  Modulo.hasMany(ModuloPermiso,{foreignKey:'id_modulo', as : 'modulos'});
+  ModuloPermiso.belongsTo(Modulo,{foreignKey:'id_modulo', as : 'modulo'});
 
-  Permiso.hasMany(ModuloPermiso,{foreignKey:'id_permiso'});
-  ModuloPermiso.belongsTo(Permiso,{foreignKey:'id_permiso'});
+  Permiso.hasMany(ModuloPermiso,{foreignKey:'id_permiso', as : 'permisos'});
+  ModuloPermiso.belongsTo(Permiso,{foreignKey:'id_permiso', as : 'permiso'});
 
-  Rol.hasMany(ModuloPermiso,{foreignKey:'id_rol'});
-  ModuloPermiso.belongsTo(Rol,{foreignKey:'id_rol'});
+  Rol.hasMany(ModuloPermiso,{foreignKey:'id_rol', as : 'roles'});
+  ModuloPermiso.belongsTo(Rol,{foreignKey:'id_rol', as : 'rol'});
 }
 export{
   ModuloPermisoModel,
