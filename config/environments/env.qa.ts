@@ -25,4 +25,6 @@ export default {
     DATABASE: "sgp",
   },
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
+  GOOGLE_APP_PASSWORD: "hyqd pide sljm ovxi",
+  IP: 'http://localhost:4200'
 };

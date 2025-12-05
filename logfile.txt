@@ -50,3 +50,7 @@
 [02-12-2025 13:02:08] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
 [02-12-2025 13:11:43] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
 [02-12-2025 13:16:49] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[05-12-2025 09:30:39] ERROR: Error durante la ejecución de loguearUsuario: Cannot destructure property 'id_usuario' of 'usuario' as it is null.
+[05-12-2025 09:30:39] ERROR: Error durante la ejecución de loguearUsuario: Cannot destructure property 'id_usuario' of 'usuario' as it is null.
+[05-12-2025 09:30:39] ERROR: Error durante la ejecución de loguearUsuario: Cannot destructure property 'id_usuario' of 'usuario' as it is null.
+[05-12-2025 12:05:02] ERROR: Error durante la ejecución de loguearUsuario: Cannot destructure property 'id_usuario' of 'usuario' as it is null.
