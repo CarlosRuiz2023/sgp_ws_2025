@@ -41,86 +41,87 @@ export class AuthController {
       return "El Usuario se encuentra deshabilidado";
     }
 
-    if (token_recuperado != null) {
-      return "El Usuario ya se encuentra logueado";
-    }
+    if (token_recuperado == null) {
 
-    // Verificar contraseña
-    const validPassword = bcryptjs.compareSync(contrasenia, contrasenia_recupearada);
-    if (!validPassword) {
+      // Verificar contraseña
+      const validPassword = bcryptjs.compareSync(contrasenia, contrasenia_recupearada);
+      if (!validPassword) {
+        await Acceso.create({
+          id_usuario,
+          fecha_hora: _Util_Fecha.DateNow(),
+          exitoso: false
+        });
+        return "Usuario / Password no son correctos - password";
+      }
+
+      // Generar JWT
+      const token = await _Util_Jwt.generarJWT(id_usuario);
+
+      await Usuario.update({ token }, { where: { id_usuario } });
+
       await Acceso.create({
         id_usuario,
         fecha_hora: _Util_Fecha.DateNow(),
-        exitoso: false
+        exitoso: true
       });
-      return "Usuario / Password no son correctos - password";
-    }
 
-    // Generar JWT
-    const token = await _Util_Jwt.generarJWT(id_usuario);
+      const usuario_logueado = await Usuario.findOne({ where: { correo } });
 
-    await Usuario.update({ token }, { where: { id_usuario } });
+      // ===================================================================================
+      // OBTENER PERMISOS
+      // ===================================================================================
 
-    await Acceso.create({
-      id_usuario,
-      fecha_hora: _Util_Fecha.DateNow(),
-      exitoso: true
-    });
+      const permisos_raw = await ModuloPermiso.findAll({
+        where: { id_rol: usuario_logueado.id_rol },
+        include: [
+          {
+            model: Modulo,
+            as: "modulo",
+            attributes: ["modulo"]
+          },
+          {
+            model: Permiso,
+            as: "permiso",
+            attributes: ["permiso"]
+          },
+          {
+            model: Rol,
+            as: "rol",
+            attributes: ["rol"]
+          }
+        ]
+      });
 
-    const usuario_logueado = await Usuario.findOne({ where: { correo } });
+      // ===================================================================================
+      // TRANSFORMAR ESTRUCTURA → { "Obras": ["Consultar", "Agregar"] }
+      // ===================================================================================
 
-    // ===================================================================================
-    // OBTENER PERMISOS
-    // ===================================================================================
+      const permisos_por_modulo: any = {};
 
-    const permisos_raw = await ModuloPermiso.findAll({
-      where: { id_rol: usuario_logueado.id_rol },
-      include: [
-        {
-          model: Modulo,
-          as: "modulo",
-          attributes: ["modulo"]
-        },
-        {
-          model: Permiso,
-          as: "permiso",
-          attributes: ["permiso"]
-        },
-        {
-          model: Rol,
-          as: "rol",
-          attributes: ["rol"]
+      permisos_raw.forEach((item: any) => {
+        const nombre_modulo = item.modulo.modulo;
+        const permiso = item.permiso.permiso;
+
+        // Si no existe el módulo, lo creamos
+        if (!permisos_por_modulo[nombre_modulo]) {
+          permisos_por_modulo[nombre_modulo] = [];
         }
-      ]
-    });
 
-    // ===================================================================================
-    // TRANSFORMAR ESTRUCTURA → { "Obras": ["Consultar", "Agregar"] }
-    // ===================================================================================
+        // Insertar el permiso
+        permisos_por_modulo[nombre_modulo].push(permiso);
+      });
 
-    const permisos_por_modulo: any = {};
+      // ===================================================================================
+      // RESPUESTA FINAL
+      // ===================================================================================
 
-    permisos_raw.forEach((item: any) => {
-      const nombre_modulo = item.modulo.modulo;
-      const permiso = item.permiso.permiso;
-
-      // Si no existe el módulo, lo creamos
-      if (!permisos_por_modulo[nombre_modulo]) {
-        permisos_por_modulo[nombre_modulo] = [];
-      }
-
-      // Insertar el permiso
-      permisos_por_modulo[nombre_modulo].push(permiso);
-    });
-
-    // ===================================================================================
-    // RESPUESTA FINAL
-    // ===================================================================================
-
-    return {
-      Usuario: usuario_logueado,
-      permisos_por_modulo
-    };
+      return {
+        Usuario: usuario_logueado,
+        permisos_por_modulo
+      };
+    } else {
+      return "El Usuario ya se encuentra logueado";
+    }
   }
 
   public async recuperarContrasenia(data: any) {
