@@ -25,7 +25,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            if (typeof id_solicitud != "number") {
+            if (typeof Number(id_solicitud) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -35,7 +35,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            const solicitud = await Solicitud.findByPk(id_solicitud);
+            const solicitud = await Solicitud.findByPk(Number(id_solicitud));
             if (solicitud.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -89,7 +89,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            if (typeof id_solicitud != "number") {
+            if (typeof Number(id_solicitud) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -99,7 +99,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            const solicitud = await Solicitud.findByPk(id_solicitud);
+            const solicitud = await Solicitud.findByPk(Number(id_solicitud));
             if (solicitud.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -153,7 +153,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_solicitud != "number") {
+            if (typeof Number(id_usuario_solicitud) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -163,7 +163,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_solicitud);
+            const usuario = await Usuario.findByPk(Number(id_usuario_solicitud));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -217,7 +217,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_laboratorio != "number") {
+            if (typeof Number(id_usuario_laboratorio) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -227,7 +227,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_laboratorio);
+            const usuario = await Usuario.findByPk(Number(id_usuario_laboratorio));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -281,7 +281,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_ms != "number") {
+            if (typeof Number(id_usuario_ms) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -291,7 +291,7 @@ export class SolicitudMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_ms);
+            const usuario = await Usuario.findByPk(Number(id_usuario_ms));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,

@@ -24,7 +24,7 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            if (typeof id_usuario != "number") {
+            if (typeof Number(id_usuario) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -34,7 +34,7 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario);
+            const usuario = await Usuario.findByPk(Number(id_usuario));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -45,9 +45,9 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            if(usuario.estatus === 0){
+            if (usuario.estatus === 0) {
                 res.status(400).json({
-                    code:400,
+                    code: 400,
                     success: false,
                     data: null,
                     message: "El usuario con el id_usuario proporcionado se encuentra inactivo",
@@ -88,7 +88,7 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            if (typeof id_usuario != "number") {
+            if (typeof Number(id_usuario) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -98,7 +98,7 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario);
+            const usuario = await Usuario.findByPk(Number(id_usuario));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -109,9 +109,9 @@ export class UsuarioMiddleware {
                 return;
             }
 
-            if(usuario.estatus === 1){
+            if (usuario.estatus === 1) {
                 res.status(400).json({
-                    code:400,
+                    code: 400,
                     success: false,
                     data: null,
                     message: "El usuario con el id_usuario proporcionado se encuentra activo",
@@ -439,14 +439,18 @@ export class UsuarioMiddleware {
             }
 
             const usuario = await Usuario.findAll({ where: { correo: correo } });
-            if (usuario.length > 0 && usuario.id_usuario != id_usuario) {
-                res.status(409).json({
-                    code: 409,
-                    success: false,
-                    data: null,
-                    message: "El correo proporcionado ya existe dentro de la base de datos",
-                });
-                return;
+
+            if (usuario.length > 0) {
+                const { id_usuario: idUsuarioEncontrado } = usuario[0];
+                if (idUsuarioEncontrado !== Number(id_usuario)) {
+                    res.status(409).json({
+                        code: 409,
+                        success: false,
+                        data: null,
+                        message: "El correo proporcionado ya existe dentro de la base de datos",
+                    });
+                    return;
+                }
             }
 
             next();

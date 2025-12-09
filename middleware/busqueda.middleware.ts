@@ -8,11 +8,7 @@ export class BusquedaMiddleware {
     public async validar_limit(req: Request, res: Response, next: NextFunction) {
         try {
 
-            let { limit } = req.params;
-
-            if (limit === undefined) {
-                limit = req.body.limit;
-            }
+            let { limit = 10 } = req.query;
 
             if (limit === undefined) {
                 res.status(400).json({
@@ -24,7 +20,7 @@ export class BusquedaMiddleware {
                 return;
             }
 
-            if (typeof limit != "number") {
+            if (typeof Number(limit) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -51,11 +47,7 @@ export class BusquedaMiddleware {
     public async validar_offset(req: Request, res: Response, next: NextFunction) {
         try {
 
-            let { offset } = req.params;
-
-            if (offset === undefined) {
-                offset = req.body.offset;
-            }
+            let { offset = 0 } = req.query;
 
             if (offset === undefined) {
                 res.status(400).json({
@@ -67,7 +59,7 @@ export class BusquedaMiddleware {
                 return;
             }
 
-            if (typeof offset != "number") {
+            if (typeof Number(offset) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -94,11 +86,7 @@ export class BusquedaMiddleware {
     public async validar_filtro(req: Request, res: Response, next: NextFunction) {
         try {
 
-            let { filtro = 'Default' } = req.params;
-
-            if (filtro === undefined) {
-                filtro = req.body.filtro;
-            }
+            let { filtro = 'Default' } = req.query;
 
             if (filtro === undefined) {
                 res.status(400).json({
@@ -137,11 +125,7 @@ export class BusquedaMiddleware {
     public async validar_busqueda(req: Request, res: Response, next: NextFunction) {
         try {
 
-            let { busqueda= 'Default' } = req.params;
-
-            if (busqueda === undefined) {
-                busqueda = req.body.busqueda;
-            }
+            let { busqueda = 'Default' } = req.query;
 
             if (busqueda === undefined) {
                 res.status(400).json({

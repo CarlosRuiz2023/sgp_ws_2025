@@ -25,7 +25,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            if (typeof id_entrega != "number") {
+            if (typeof Number(id_entrega) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -35,7 +35,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            const entrega = await Entrega.findByPk(id_entrega);
+            const entrega = await Entrega.findByPk(Number(id_entrega));
             if (entrega.length === 0) {
                 res.status(404).json({
                     code:404,
@@ -89,7 +89,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            if (typeof id_entrega != "number") {
+            if (typeof Number(id_entrega) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -99,7 +99,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            const entrega = await Entrega.findByPk(id_entrega);
+            const entrega = await Entrega.findByPk(Number(id_entrega));
             if (entrega.length === 0) {
                 res.status(404).json({
                     code:404,
@@ -153,7 +153,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_fisico != "number") {
+            if (typeof Number(id_usuario_fisico) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -163,7 +163,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_fisico);
+            const usuario = await Usuario.findByPk(Number(id_usuario_fisico));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -217,7 +217,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_administrativo != "number") {
+            if (typeof Number(id_usuario_administrativo) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -227,7 +227,7 @@ export class EntregaMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_administrativo);
+            const usuario = await Usuario.findByPk(Number(id_usuario_administrativo));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,

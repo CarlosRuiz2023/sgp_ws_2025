@@ -24,7 +24,7 @@ export class EmpresaMiddleware {
                 return;
             }
 
-            if (typeof id_empresa != "number") {
+            if (typeof Number(id_empresa) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -34,7 +34,7 @@ export class EmpresaMiddleware {
                 return;
             }
 
-            const empresa = await Empresa.findByPk(id_empresa);
+            const empresa = await Empresa.findByPk(Number(id_empresa));
             if (empresa.length === 0) {
                 res.status(404).json({
                     code:404,

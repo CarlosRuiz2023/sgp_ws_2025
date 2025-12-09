@@ -25,7 +25,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            if (typeof id_oficio_sapal != "number") {
+            if (typeof Number(id_oficio_sapal) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -35,7 +35,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            const oficio_sapal = await OficioSapal.findByPk(id_oficio_sapal);
+            const oficio_sapal = await OficioSapal.findByPk(Number(id_oficio_sapal));
             if (oficio_sapal.length === 0) {
                 res.status(404).json({
                     code:404,
@@ -89,7 +89,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            if (typeof id_oficio_sapal != "number") {
+            if (typeof Number(id_oficio_sapal) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -99,7 +99,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            const oficio_sapal = await OficioSapal.findByPk(id_oficio_sapal);
+            const oficio_sapal = await OficioSapal.findByPk(Number(id_oficio_sapal));
             if (oficio_sapal.length === 0) {
                 res.status(404).json({
                     code:404,
@@ -153,7 +153,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_sapal != "number") {
+            if (typeof Number(id_usuario_sapal) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -163,7 +163,7 @@ export class OficioSapalMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_sapal);
+            const usuario = await Usuario.findByPk(Number(id_usuario_sapal));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,

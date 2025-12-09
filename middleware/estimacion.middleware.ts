@@ -24,7 +24,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof id_estimacion != "number") {
+            if (typeof Number(id_estimacion) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -34,7 +34,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            const estimacion = await Estimacion.findByPk(id_estimacion);
+            const estimacion = await Estimacion.findByPk(Number(id_estimacion));
             if (estimacion.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -88,7 +88,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof id_estimacion != "number") {
+            if (typeof Number(id_estimacion) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -98,7 +98,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            const estimacion = await Estimacion.findByPk(id_estimacion);
+            const estimacion = await Estimacion.findByPk(Number(id_estimacion));
             if (estimacion.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -205,7 +205,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof avance_fisico != "number") {
+            if (typeof Number(avance_fisico) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -248,7 +248,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof avance_financiero != "number") {
+            if (typeof Number(avance_financiero) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -291,7 +291,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof actual != "number") {
+            if (typeof Number(actual) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -334,7 +334,7 @@ export class EstimacionMiddleware {
                 return;
             }
 
-            if (typeof anterior != "number") {
+            if (typeof Number(anterior) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,

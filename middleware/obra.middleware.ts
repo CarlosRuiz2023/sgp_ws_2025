@@ -24,7 +24,7 @@ export class ObraMiddleware {
                 return;
             }
 
-            if (typeof id_obra != "number") {
+            if (typeof Number(id_obra) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -34,7 +34,7 @@ export class ObraMiddleware {
                 return;
             }
 
-            const obra = await Obra.findByPk(id_obra);
+            const obra = await Obra.findByPk(Number(id_obra));
             if (obra.length === 0) {
                 res.status(404).json({
                     code:404,
@@ -88,7 +88,7 @@ export class ObraMiddleware {
                 return;
             }
 
-            if (typeof id_obra != "number") {
+            if (typeof Number(id_obra) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -98,7 +98,7 @@ export class ObraMiddleware {
                 return;
             }
 
-            const obra = await Obra.findByPk(id_obra);
+            const obra = await Obra.findByPk(Number(id_obra));
             if (obra.length === 0) {
                 res.status(404).json({
                     code:404,

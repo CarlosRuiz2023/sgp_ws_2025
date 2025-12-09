@@ -24,7 +24,7 @@ export class RolMiddleware {
                 return;
             }
 
-            if (typeof id_rol != "number") {
+            if (typeof Number(id_rol) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -34,7 +34,7 @@ export class RolMiddleware {
                 return;
             }
 
-            const rol = await Rol.findByPk(id_rol);
+            const rol = await Rol.findByPk(Number(id_rol));
             if (rol.length === 0) {
                 res.status(404).json({
                     code:404,

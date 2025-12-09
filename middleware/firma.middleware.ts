@@ -24,7 +24,7 @@ export class FirmaMiddleware {
                 return;
             }
 
-            if (typeof id_firma != "number") {
+            if (typeof Number(id_firma) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -34,7 +34,7 @@ export class FirmaMiddleware {
                 return;
             }
 
-            const firma = await Firma.findByPk(id_firma);
+            const firma = await Firma.findByPk(Number(id_firma));
             if (firma.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -88,7 +88,7 @@ export class FirmaMiddleware {
                 return;
             }
 
-            if (typeof id_firma != "number") {
+            if (typeof Number(id_firma) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -98,7 +98,7 @@ export class FirmaMiddleware {
                 return;
             }
 
-            const firma = await Firma.findByPk(id_firma);
+            const firma = await Firma.findByPk(Number(id_firma));
             if (firma.length === 0) {
                 res.status(404).json({
                     code: 404,

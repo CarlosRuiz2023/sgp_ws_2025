@@ -24,7 +24,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            if (typeof id_comite != "number") {
+            if (typeof Number(id_comite) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -34,7 +34,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            const comite = await Comite.findByPk(id_comite);
+            const comite = await Comite.findByPk(Number(id_comite));
             if (comite.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -88,7 +88,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            if (typeof id_comite != "number") {
+            if (typeof Number(id_comite) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -98,7 +98,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            const comite = await Comite.findByPk(id_comite);
+            const comite = await Comite.findByPk(Number(id_comite));
             if (comite.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -152,7 +152,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            if (typeof tipo != "number") {
+            if (typeof Number(tipo) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -195,7 +195,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            if (typeof punto != "number") {
+            if (typeof Number(punto) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -238,7 +238,7 @@ export class ComiteMiddleware {
                 return;
             }
 
-            if (typeof costo != "number") {
+            if (typeof Number(costo) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,

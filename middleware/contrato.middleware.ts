@@ -25,7 +25,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            if (typeof id_contrato != "number") {
+            if (typeof Number(id_contrato) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -35,7 +35,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            const contrato = await Contrato.findByPk(id_contrato);
+            const contrato = await Contrato.findByPk(Number(id_contrato));
             if (contrato.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -89,7 +89,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            if (typeof id_contrato != "number") {
+            if (typeof Number(id_contrato) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -99,7 +99,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            const contrato = await Contrato.findByPk(id_contrato);
+            const contrato = await Contrato.findByPk(Number(id_contrato));
             if (contrato.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -153,7 +153,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_contratista != "number") {
+            if (typeof Number(id_usuario_contratista) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -163,7 +163,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_contratista);
+            const usuario = await Usuario.findByPk(Number(id_usuario_contratista));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -217,7 +217,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            if (typeof id_usuario_supervisor != "number") {
+            if (typeof Number(id_usuario_supervisor) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,
@@ -227,7 +227,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            const usuario = await Usuario.findByPk(id_usuario_supervisor);
+            const usuario = await Usuario.findByPk(Number(id_usuario_supervisor));
             if (usuario.length === 0) {
                 res.status(404).json({
                     code: 404,
@@ -281,7 +281,7 @@ export class ContratoMiddleware {
                 return;
             }
 
-            if (typeof costo_real != "number") {
+            if (typeof Number(costo_real) != "number") {
                 res.status(400).json({
                     code: 400,
                     success: false,

@@ -24,7 +24,7 @@ export class ColoniaMiddleware {
                 return;
             }
 
-            if (typeof id_colonia != "number") {
+            if (typeof Number(id_colonia) != "number") {
                 res.status(400).json({
                     code:400,
                     success: false,
@@ -34,7 +34,7 @@ export class ColoniaMiddleware {
                 return;
             }
 
-            const colonia = await Colonia.findByPk(id_colonia);
+            const colonia = await Colonia.findByPk(Number(id_colonia));
             if (colonia.length === 0) {
                 res.status(404).json({
                     code:404,
