@@ -11,7 +11,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class OficioSapalInterface {
     public async obtenerOficios(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OFICIO_SAPAL_CONTROLLER.obtenerOficios(params);
             return res.status(200).json({
                 success: true,
@@ -26,7 +26,7 @@ export class OficioSapalInterface {
 
     public async agregarOficioSapal(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OFICIO_SAPAL_CONTROLLER.agregarOficioSapal(params);
             return res.status(200).json({
                 success: true,
@@ -41,7 +41,7 @@ export class OficioSapalInterface {
 
     public async actualizarOficioSapal(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OFICIO_SAPAL_CONTROLLER.actualizarOficioSapal(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +56,7 @@ export class OficioSapalInterface {
 
     public async eliminarOficioSapal(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OFICIO_SAPAL_CONTROLLER.eliminarOficioSapal(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +71,7 @@ export class OficioSapalInterface {
 
     public async activarOficioSapal(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OFICIO_SAPAL_CONTROLLER.activarOficioSapal(params);
             return res.status(200).json({
                 success: true,

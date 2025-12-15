@@ -24,7 +24,7 @@ export class ColoniaInterface {
             
     public async obtenerColonia(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _COLONIA_CONTROLLER.obtenerColonia(params);
             return res.status(200).json({
                 success: true,

@@ -12,7 +12,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class ContratoInterface {
     public async obtenerContratos(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _CONTRATO_CONTROLLER.obtenerContratos(params);
             return res.status(200).json({
                 success: true,
@@ -27,7 +27,7 @@ export class ContratoInterface {
 
     public async agregarContrato(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _CONTRATO_CONTROLLER.agregarContrato(params);
             return res.status(200).json({
                 success: true,
@@ -42,7 +42,7 @@ export class ContratoInterface {
 
     public async actualizarContrato(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _CONTRATO_CONTROLLER.actualizarContrato(params);
             return res.status(200).json({
                 success: true,
@@ -57,7 +57,7 @@ export class ContratoInterface {
 
     public async eliminarContrato(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _CONTRATO_CONTROLLER.eliminarContrato(params);
             return res.status(200).json({
                 success: true,
@@ -72,7 +72,7 @@ export class ContratoInterface {
 
     public async activarContrato(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _CONTRATO_CONTROLLER.activarContrato(params);
             return res.status(200).json({
                 success: true,

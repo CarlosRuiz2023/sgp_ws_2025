@@ -10,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class AuthInterface {
     public async loguearUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado: any = await _AUTH_CONTROLLER.loguearUsuario(params);
             const {Usuario=undefined} = resultado;
             if(!Usuario){
@@ -32,7 +32,7 @@ export class AuthInterface {
     
     public async recuperarContrasenia(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado: any = await _AUTH_CONTROLLER.recuperarContrasenia(params);
             return res.status(200).json({
                 success: true,
@@ -47,7 +47,7 @@ export class AuthInterface {
             
     public async desloguearUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _AUTH_CONTROLLER.desloguearUsuario(params);
             return res.status(200).json({
                 success: true,
@@ -63,7 +63,7 @@ export class AuthInterface {
 
     public async desloguearUsuarioToken(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _AUTH_CONTROLLER.desloguearUsuarioToken(params);
             return res.status(200).json({
                 success: true,
@@ -79,7 +79,7 @@ export class AuthInterface {
             
     public async checkStatus(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _AUTH_CONTROLLER.checkStatus(params);
             return res.status(200).json({
                 success: true,
@@ -95,7 +95,7 @@ export class AuthInterface {
             
     public async cambiarContrasenia(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             await _AUTH_CONTROLLER.cambiarContrasenia(params,res);
             /* return res.status(200).json({
                 success: false,

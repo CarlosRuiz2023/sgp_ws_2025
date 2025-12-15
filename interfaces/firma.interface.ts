@@ -10,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class FirmaInterface {
     public async obtenerFirmas(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _FIRMA_CONTROLLER.obtenerFirmas(params);
             return res.status(200).json({
                 success: true,
@@ -25,7 +25,7 @@ export class FirmaInterface {
 
     public async agregarFirma(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _FIRMA_CONTROLLER.agregarFirma(params);
             return res.status(200).json({
                 success: true,
@@ -40,7 +40,7 @@ export class FirmaInterface {
 
     public async actualizarFirma(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _FIRMA_CONTROLLER.actualizarFirma(params);
             return res.status(200).json({
                 success: true,
@@ -55,7 +55,7 @@ export class FirmaInterface {
 
     public async eliminarFirma(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _FIRMA_CONTROLLER.eliminarFirma(params);
             return res.status(200).json({
                 success: true,
@@ -70,7 +70,7 @@ export class FirmaInterface {
 
     public async activarFirma(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _FIRMA_CONTROLLER.activarFirma(params);
             return res.status(200).json({
                 success: true,

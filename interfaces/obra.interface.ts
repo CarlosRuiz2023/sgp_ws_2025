@@ -10,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class ObraInterface {
     public async obtenerObras(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.obtenerObras(params);
             return res.status(200).json({
                 success: true,
@@ -25,7 +25,7 @@ export class ObraInterface {
             
     public async obtenerObra(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.obtenerObra(params);
             return res.status(200).json({
                 success: true,
@@ -41,7 +41,7 @@ export class ObraInterface {
 
     public async agregarObra(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.agregarObra(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +56,7 @@ export class ObraInterface {
 
     public async actualizarObra(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.actualizarObra(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +71,7 @@ export class ObraInterface {
 
     public async eliminarObra(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.eliminarObra(params);
             return res.status(200).json({
                 success: true,
@@ -86,7 +86,7 @@ export class ObraInterface {
 
     public async activarObra(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _OBRA_CONTROLLER.activarObra(params);
             return res.status(200).json({
                 success: true,

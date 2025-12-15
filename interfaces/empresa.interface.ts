@@ -24,7 +24,7 @@ export class EmpresaInterface {
             
     public async obtenerEmpresa(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _EMPRESA_CONTROLLER.obtenerEmpresa(params);
             return res.status(200).json({
                 success: true,

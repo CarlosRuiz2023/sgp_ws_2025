@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { UtilLogError } from "../utils/UtilLogError";
 import { EntregaController } from "../controllers/entrega.controller";
 import { UtilRequest } from "../utils/UtilRequest";
-import { UtilJwt } from '../utils/UtilJwt';
 
 const _UtilRequest = new UtilRequest();
 const _ENTREGA_CONTROLLER = new EntregaController();
@@ -11,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class EntregaInterface {
     public async obtenerEntregas(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ENTREGA_CONTROLLER.obtenerEntregas(params);
             return res.status(200).json({
                 success: true,
@@ -26,7 +25,7 @@ export class EntregaInterface {
 
     public async agregarEntrega(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ENTREGA_CONTROLLER.agregarEntrega(params);
             return res.status(200).json({
                 success: true,
@@ -41,7 +40,7 @@ export class EntregaInterface {
 
     public async actualizarEntrega(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ENTREGA_CONTROLLER.actualizarEntrega(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +55,7 @@ export class EntregaInterface {
 
     public async eliminarEntrega(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ENTREGA_CONTROLLER.eliminarEntrega(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +70,7 @@ export class EntregaInterface {
 
     public async activarEntrega(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ENTREGA_CONTROLLER.activarEntrega(params);
             return res.status(200).json({
                 success: true,

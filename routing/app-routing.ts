@@ -15,6 +15,7 @@ import SolicitudRoutes from "../routes/solicitud.routes";
 import OficioSapalRoutes from "../routes/oficioSapal.routes";
 import EntregaRoutes from "../routes/entrega.routes";
 import FirmaRoutes from "../routes/firma.routes";
+import EmailRoutes from "../routes/email.routes";
 
 export var AppRouting = [
     router.use('/coneccion', ConeccionRoutes),
@@ -31,5 +32,6 @@ export var AppRouting = [
     router.use('/solicitud',SolicitudRoutes),
     router.use('/oficio-sapal',OficioSapalRoutes),
     router.use('/entrega',EntregaRoutes),
-    router.use('/firma',FirmaRoutes)
+    router.use('/firma',FirmaRoutes),
+    router.use('/email',EmailRoutes)
 ];

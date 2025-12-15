@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { UtilLogError } from "../utils/UtilLogError";
 import { SolicitudController } from "../controllers/solicitud.controller";
 import { UtilRequest } from "../utils/UtilRequest";
-import { UtilJwt } from '../utils/UtilJwt';
 
 const _UtilRequest = new UtilRequest();
 const _SOLICITUD_CONTROLLER = new SolicitudController();
@@ -11,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class SolicitudInterface {
     public async obtenerSolicitudes(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _SOLICITUD_CONTROLLER.obtenerSolicitudes(params);
             return res.status(200).json({
                 success: true,
@@ -26,7 +25,7 @@ export class SolicitudInterface {
 
     public async agregarSolicitud(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _SOLICITUD_CONTROLLER.agregarSolicitud(params);
             return res.status(200).json({
                 success: true,
@@ -41,7 +40,7 @@ export class SolicitudInterface {
 
     public async actualizarSolicitud(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _SOLICITUD_CONTROLLER.actualizarSolicitud(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +55,7 @@ export class SolicitudInterface {
 
     public async eliminarSolicitud(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _SOLICITUD_CONTROLLER.eliminarSolicitud(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +70,7 @@ export class SolicitudInterface {
 
     public async activarSolicitud(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _SOLICITUD_CONTROLLER.activarSolicitud(params);
             return res.status(200).json({
                 success: true,

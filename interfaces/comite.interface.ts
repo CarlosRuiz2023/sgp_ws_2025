@@ -12,7 +12,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class ComiteInterface {
     public async obtenerComites(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _COMITE_CONTROLLER.obtenerComites(params);
             return res.status(200).json({
                 success: true,
@@ -27,7 +27,7 @@ export class ComiteInterface {
 
     public async obtenerComite(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _COMITE_CONTROLLER.obtenerComite(params);
             return res.status(200).json({
                 success: true,
@@ -55,24 +55,9 @@ export class ComiteInterface {
         }
     }
 
-    /* public async actualizarComite(req: Request, res: Response) {
-        try {
-            var params = _UtilRequest.getParams(req);
-            let resultado = await _OBRA_CONTROLLER.actualizarObra(params);
-            return res.status(200).json({
-                success: true,
-                data: resultado
-            });
-        } catch (error:any) {
-            console.log(error);
-            _UTIL_LOG_ERROR.escribirErrorEnLog('Error durante la ejecución de actualizarObra: ' +error.message);
-            return res.status(500).json({ success: false, data: null });
-        }
-    } */
-
     public async eliminarComite(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _COMITE_CONTROLLER.eliminarComite(params);
             return res.status(200).json({
                 success: true,
@@ -87,7 +72,7 @@ export class ComiteInterface {
 
     public async activarComite(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _COMITE_CONTROLLER.activarComite(params);
             return res.status(200).json({
                 success: true,

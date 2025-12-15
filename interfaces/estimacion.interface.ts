@@ -41,7 +41,7 @@ export class EstimacionInterface {
 
     public async agregarEstimacion(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ESTIMACION_CONTROLLER.agregarEstimacion(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +56,7 @@ export class EstimacionInterface {
 
     public async actualizarEstimacion(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ESTIMACION_CONTROLLER.actualizarEstimacion(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +71,7 @@ export class EstimacionInterface {
 
     public async eliminarEstimacion(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ESTIMACION_CONTROLLER.eliminarEstimacion(params);
             return res.status(200).json({
                 success: true,
@@ -86,7 +86,7 @@ export class EstimacionInterface {
 
     public async activarEstimacion(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ESTIMACION_CONTROLLER.activarEstimacion(params);
             return res.status(200).json({
                 success: true,

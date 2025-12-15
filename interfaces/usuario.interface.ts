@@ -10,7 +10,7 @@ const _UTIL_LOG_ERROR = new UtilLogError();
 export class UsuarioInterface {
     public async obtenerUsuarios(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.obtenerUsuarios(params);
             return res.status(200).json({
                 success: true,
@@ -25,7 +25,7 @@ export class UsuarioInterface {
             
     public async obtenerUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.obtenerUsuario(params);
             return res.status(200).json({
                 success: true,
@@ -41,7 +41,7 @@ export class UsuarioInterface {
 
     public async agregarUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.agregarUsuario(params);
             return res.status(200).json({
                 success: true,
@@ -56,7 +56,7 @@ export class UsuarioInterface {
 
     public async actualizarUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.actualizarUsuario(params);
             return res.status(200).json({
                 success: true,
@@ -71,7 +71,7 @@ export class UsuarioInterface {
 
     public async actualizarContrasenia(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.actualizarContrasenia(params);
             return res.status(200).json({
                 success: true,
@@ -86,7 +86,7 @@ export class UsuarioInterface {
 
     public async eliminarUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.eliminarUsuario(params);
             return res.status(200).json({
                 success: true,
@@ -101,7 +101,7 @@ export class UsuarioInterface {
 
     public async activarUsuario(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _USUARIO_CONTROLLER.activarUsuario(params);
             return res.status(200).json({
                 success: true,

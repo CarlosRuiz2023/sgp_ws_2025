@@ -24,7 +24,7 @@ export class RolInterface {
             
     public async obtenerRol(req: Request, res: Response) {
         try {
-            var params = _UtilRequest.getParams(req);
+            var params = await _UtilRequest.getParams(req);
             let resultado = await _ROL_CONTROLLER.obtenerRol(params);
             return res.status(200).json({
                 success: true,
