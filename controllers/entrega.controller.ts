@@ -1,10 +1,10 @@
-import { UtilFecha } from "../utils/UtilFecha";
 import { Usuario } from "../models/usuario.model";
 import { Obra } from "../models/obra.model";
 import { col, fn, Op, where } from "sequelize";
 import { Entrega } from "../models/entrega.model";
+import { EmailController } from "../controllers/email.controller";
 
-const _Util_Fecha = new UtilFecha();
+const _EMAIL_CONTROLLER = new EmailController();
 
 export class EntregaController {
 
@@ -146,6 +146,25 @@ export class EntregaController {
         }]
     });
 
+    const fisico = await Usuario.findByPk(id_usuario_fisico);
+    const { correo: correo_fisico } = fisico;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_fisico,
+      "titulo": "Entrega asignada",
+      "mensaje": "Tienes una nueva entrega pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver entrega",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+    const administrativo = await Usuario.findByPk(id_usuario_administrativo);
+    const { correo: correo_administrativo } = administrativo;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_administrativo,
+      "titulo": "Entrega asignada",
+      "mensaje": "Tienes una nueva entrega pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver entrega",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+
     return entrega_recuperada;
   }
 
@@ -157,6 +176,25 @@ export class EntregaController {
       id_usuario_fisico,
       id_usuario_administrativo,
     }, { where: { id_entrega } });
+
+    const fisico = await Usuario.findByPk(id_usuario_fisico);
+    const { correo: correo_fisico } = fisico;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_fisico,
+      "titulo": "Entrega asignada",
+      "mensaje": `Tienes una actualizacion dentro de la entrega ${id_entrega} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver entrega",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+    const administrativo = await Usuario.findByPk(id_usuario_administrativo);
+    const { correo: correo_administrativo } = administrativo;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_administrativo,
+      "titulo": "Entrega asignada",
+      "mensaje": `Tienes una actualizacion dentro de la entrega ${id_entrega} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver entrega",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
 
     return `Entrega ${id_entrega} actualizada correctamente`;
   }

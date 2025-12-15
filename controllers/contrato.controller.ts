@@ -3,8 +3,10 @@ import { Usuario } from "../models/usuario.model";
 import { Obra } from "../models/obra.model";
 import { col, fn, Op, where } from "sequelize";
 import { Contrato } from "../models/contrato.model";
+import { EmailController } from "../controllers/email.controller";
 
 const _Util_Fecha = new UtilFecha();
+const _EMAIL_CONTROLLER = new EmailController();
 
 export class ContratoController {
 
@@ -162,6 +164,25 @@ export class ContratoController {
       }]
     });
 
+    const contratista = await Usuario.findByPk(id_usuario_contratista);
+    const { correo: correo_supervisor } = contratista;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_supervisor,
+      "titulo": "Contrato asignado",
+      "mensaje": "Tienes un nuevo contrato pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver contrato",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+    const supervisor = await Usuario.findByPk(id_usuario_supervisor);
+    const { correo: correo_contratista } = supervisor;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_contratista,
+      "titulo": "Contrato asignado",
+      "mensaje": "Tienes un nuevo contrato pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver contrato",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+
     return cointrato_recuperado;
   }
 
@@ -178,6 +199,25 @@ export class ContratoController {
       fecha_inicio,
       fecha_termino
     }, { where: { id_contrato: id_contrato } });
+
+    const contratista = await Usuario.findByPk(id_usuario_contratista);
+    const { correo: correo_supervisor } = contratista;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_supervisor,
+      "titulo": "Contrato asignado",
+      "mensaje": `Tienes una actualizacion dentro del contrato ${id_contrato} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver contrato",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+    const supervisor = await Usuario.findByPk(id_usuario_supervisor);
+    const { correo: correo_contratista } = supervisor;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_contratista,
+      "titulo": "Contrato asignado",
+      "mensaje": `Tienes una actualizacion dentro del contrato ${id_contrato} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver contrato",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
 
     return `Contrato ${id_contrato} actualizado correctamente`;
   }

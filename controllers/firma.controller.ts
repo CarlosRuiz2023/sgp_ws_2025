@@ -1,10 +1,10 @@
-import { UtilFecha } from "../utils/UtilFecha";
 import { Usuario } from "../models/usuario.model";
 import { Obra } from "../models/obra.model";
 import { col, fn, Op, where } from "sequelize";
 import { Firma } from "../models/firma.model";
+import { EmailController } from "../controllers/email.controller";
 
-const _Util_Fecha = new UtilFecha();
+const _EMAIL_CONTROLLER = new EmailController();
 
 export class FirmaController {
 
@@ -130,6 +130,16 @@ export class FirmaController {
       }]
     });
 
+    const firmador = await Usuario.findByPk(id_usuario);
+    const { correo: correo_firmador } = firmador;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_firmador,
+      "titulo": "Firma asignada",
+      "mensaje": "Tienes una nueva firma pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver firma",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
+
     return firma_recuperada;
   }
 
@@ -140,6 +150,16 @@ export class FirmaController {
       id_obra,
       id_usuario
     }, { where: { id_firma } });
+
+    const firmador = await Usuario.findByPk(id_usuario);
+    const { correo: correo_firmador } = firmador;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_firmador,
+      "titulo": "Firma asignada",
+      "mensaje": `Tienes una actualizacion dentro de la firma ${id_firma} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver firma",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
 
     return `Firma ${id_firma} actualizada correctamente`;
   }

@@ -2,10 +2,11 @@ import { UtilFecha } from "../utils/UtilFecha";
 import { Usuario } from "../models/usuario.model";
 import { Obra } from "../models/obra.model";
 import { col, fn, Op, where } from "sequelize";
-import { Solicitud } from "../models/solicitud.model";
 import { OficioSapal } from "../models/oficioSapal.model";
+import { EmailController } from "../controllers/email.controller";
 
 const _Util_Fecha = new UtilFecha();
+const _EMAIL_CONTROLLER = new EmailController();
 
 export class OficioSapalController {
 
@@ -57,9 +58,11 @@ export class OficioSapalController {
       result = await OficioSapal.findAndCountAll({
         where:
           filtro === 'id_oficio_sapal'
-            ? { id_oficio_sapal
-              
-              : { [Op.eq]: busqueda } }
+            ? {
+              id_oficio_sapal
+
+                : { [Op.eq]: busqueda }
+            }
             : filtro === 'id_usuario'
               ? {
                 [Op.or]: [
@@ -133,20 +136,30 @@ export class OficioSapalController {
 
     const oficio_sapal_recuperado = await OficioSapal.findByPk(nuevo_oficio_sapal.id_oficio_sapal, {
       include: [{
-          model: Usuario,
-          as: 'usuario',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Usuario,
-          as: 'empleado_sapal',
-          attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
-        },
-        {
-          model: Obra,
-          as: 'obra',
-          attributes: ['calle']
-        }]
+        model: Usuario,
+        as: 'usuario',
+        attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
+      },
+      {
+        model: Usuario,
+        as: 'empleado_sapal',
+        attributes: ['nombres', 'apellido_paterno', 'apellido_materno']
+      },
+      {
+        model: Obra,
+        as: 'obra',
+        attributes: ['calle']
+      }]
+    });
+
+    const sapalista = await Usuario.findByPk(id_usuario_sapal);
+    const { correo: correo_sapal } = sapalista;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_sapal,
+      "titulo": "Oficio Sapal asignado",
+      "mensaje": "Tienes un nuevo oficio para sapal pendiente en el sistema. Por favor revisa los detalles.",
+      "botonTexto": "Ver oficio sapal",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
     });
 
     return oficio_sapal_recuperado;
@@ -154,7 +167,7 @@ export class OficioSapalController {
 
   public async actualizarOficioSapal(data: any) {
     const params = await data;
-    const { id_oficio_sapal, id_obra, id_usuario_sapal, usuario, observaciones=null } = params;
+    const { id_oficio_sapal, id_obra, id_usuario_sapal, usuario, observaciones = null } = params;
     const { id_usuario } = usuario;
     await OficioSapal.update({
       id_obra,
@@ -162,6 +175,16 @@ export class OficioSapalController {
       id_usuario_sapal,
       observaciones
     }, { where: { id_oficio_sapal } });
+
+    const sapalista = await Usuario.findByPk(id_usuario_sapal);
+    const { correo: correo_sapal } = sapalista;
+    await _EMAIL_CONTROLLER.enviarCorreoInformativo({
+      "correo": correo_sapal,
+      "titulo": "Oficio Sapal asignado",
+      "mensaje": `Tienes una actualizacion dentro del oficio sapal ${id_oficio_sapal} pendiente en el sistema. Por favor revisa los detalles.`,
+      "botonTexto": "Ver oficio sapal",
+      "botonUrl": global.ENVGLOBAL?.IP || 'http://localhost:4200'+"/auth/login",
+    });
 
     return `Oficio sapal ${id_oficio_sapal} actualizado correctamente`;
   }
