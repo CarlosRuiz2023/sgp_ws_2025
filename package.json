@@ -10,7 +10,7 @@
     "start-dev": "tsc&&set NODE_ENV=DEV&&nodemon dist/index.js",
     "dev": "tsc&&set NODE_ENV=DEV&&node dist/index.js",
     "qa": "tsc&&set NODE_ENV=QA&&node dist/index.js",
-    "prod": "tsc&&set NODE_ENV=PROD&&node dist/index.js",
+    "prod": "tsc && NODE_ENV=PROD node dist/index.js",
     "docker-local": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=LOCAL -d api_ts_demo",
     "docker-dev": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=DEV -d api_ts_demo",
     "docker-qa": "docker build -t api_ts_demo . && docker run -p 9000:9000 --env NODE_ENV=QA -d api_ts_demo",
