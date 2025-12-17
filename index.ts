@@ -13,6 +13,7 @@ import swaggerUI from "swagger-ui-express";
 import { SwaggerInterface } from "./config/swagger/swagger-interface";
 import { initConnections } from "./config/db/connection";
 import fileUpload from "express-fileupload";
+import dns from 'dns';
 
 const _UtilFecha = new UtilFecha();
 const environment = Environment();
@@ -20,12 +21,13 @@ const color = Colors();
 var _SwaggerInterface = new SwaggerInterface();
 
 (async () => {
-
+  
   //OBTENEMOS NUESTRAS VARIABLES DE ENTORNO
   const ENV = await environment.environmentInstance();
   //VARIABLE GLOBAL PARA UTILIZAR EN NUESTRA APLICACION
   global.ENVGLOBAL = ENV;
-
+  dns.setDefaultResultOrder('ipv4first');
+  
   await initConnections();
 
   var CORS_WHITE_LIST = ENV.API_CORS.split(',');

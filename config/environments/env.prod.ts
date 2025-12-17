@@ -1,7 +1,7 @@
 export default {
   API_ENVIRONMENT: "PROD",
   API_NAME: "API TYPESCRIPT",
-  API_PORT: 3502,
+  API_PORT: 3500,
   API_VERSION: "1.0.0",
   API_SECRET_KEY: "*FIDOC_2025*",
   API_CORS: "*,localhost,localhost:4200", // lista de cors se separan por una coma
