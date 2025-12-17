@@ -27,12 +27,12 @@ const initConnections = async () => {
     database: global.ENVGLOBAL.POSTGRESQL_DATABASE || 'postgres',
     username: global.ENVGLOBAL.POSTGRESQL_USER_NAME || 'postgres',
     password: global.ENVGLOBAL.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
-    dialectOptions: {
+    /* dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false
     }
-  }
+  }*/
   });
   
   RolModel();
