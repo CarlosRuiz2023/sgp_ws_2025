@@ -28,7 +28,7 @@ var _SwaggerInterface = new SwaggerInterface();
 
   await initConnections();
 
-  var CORS_WHITE_LIST = ENV.API.CORS.split(',');
+  var CORS_WHITE_LIST = ENV.API_CORS.split(',');
 
   // Añade también '*' para desarrollo local si es necesario
   CORS_WHITE_LIST.push('*'); // Solo para desarrollo
@@ -89,9 +89,9 @@ var _SwaggerInterface = new SwaggerInterface();
   // info route
   www.api.get('/', (req: any, res: any) => {
     res.status(200).send({
-      env: ENV.API.ENVIRONMENT,
-      app: ENV.API.NAME,
-      version: ENV.API.VERSION,
+      env: ENV.API_ENVIRONMENT,
+      app: ENV.API_NAME,
+      version: ENV.API_VERSION,
       msg: "API FUNCIONANDO",
       code: 200,
       method: "/",
@@ -102,8 +102,8 @@ var _SwaggerInterface = new SwaggerInterface();
   //INICIA SERVIDOR
   www.start(() => {
 
-    if (ENV.API.ENVIRONMENT == 'DEV' || ENV.API.ENVIRONMENT == 'LOCAL') {
-      console.log(`Testear ruta: http://localhost:${ENV.API.PORT}`, `http://localhost:${ENV.API.PORT}/api/swagger/v1`);
+    if (ENV.API_ENVIRONMENT == 'DEV' || ENV.API_ENVIRONMENT == 'LOCAL') {
+      console.log(`Testear ruta: http://localhost:${ENV.API_PORT}`, `http://localhost:${ENV.API_PORT}/api/swagger/v1`);
     }
 
   });

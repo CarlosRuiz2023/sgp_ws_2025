@@ -35,9 +35,9 @@ export default class ExpressInstanceServer {
     }
 
     start(callback: Function) {
-        this.httpServer.listen(this.ENV.API.PORT, callback());
-        console.log(`${color.express(`Server: Corriendo en el puerto ${this.ENV.API.PORT}`)}`);
-        console.log(`${color.express(`Ambiente: ${this.ENV.API.ENVIRONMENT}`)}`);
+        this.httpServer.listen(this.ENV.API_PORT, callback());
+        console.log(`${color.express(`Server: Corriendo en el puerto ${this.ENV.API_PORT}`)}`);
+        console.log(`${color.express(`Ambiente: ${this.ENV.API_ENVIRONMENT}`)}`);
     }
 
 };

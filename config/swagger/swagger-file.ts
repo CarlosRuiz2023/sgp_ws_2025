@@ -17,20 +17,20 @@ export class SwaggerFile {
         return {
             "swagger": "2.0",
             "info": {
-                "description": `Environment ${global.ENVGLOBAL.API.ENVIRONMENT}`,
-                "version": global.ENVGLOBAL.API.VERSION,
-                "title": global.ENVGLOBAL.SWAGGER.TITLE,
+                "description": `Environment ${global.ENVGLOBAL.API_ENVIRONMENT}`,
+                "version": global.ENVGLOBAL.API_VERSION,
+                "title": global.ENVGLOBAL.SWAGGER_TITLE,
                 "termsOfService": "http://swagger.io/terms/",
                 "contact": {
-                    "email": global.ENVGLOBAL.SWAGGER.EMAIL
+                    "email": global.ENVGLOBAL.SWAGGER_EMAIL
                 },
                 "license": {
                     "name": "Apache 2.0",
                     "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
                 }
             },
-            "host": global.ENVGLOBAL.SWAGGER.HOST,
-            "basePath": global.ENVGLOBAL.SWAGGER.BASE_PATH,
+            "host": global.ENVGLOBAL.SWAGGER_HOST,
+            "basePath": global.ENVGLOBAL.SWAGGER_BASE_PATH,
             "schemes": [
                 "http",
                 "https"

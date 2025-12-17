@@ -1,29 +1,22 @@
 export default {
-  API: {
-    ENVIRONMENT: "QA",
-    NAME: "API TYPESCRIPT",
-    PORT: 3503,
-    VERSION: "1.0.0",
-    SECRET_KEY: "*FIDOC_2025*",
-    CORS: "*,localhost,localhost:4200", // lista de cors se separan por una coma
-    DEBUG: false // ver logs en terminal
-  },
-
-  SWAGGER: {
-    ENVIRONMENT: "QA",
-    TITLE: "API",
-    HOST: 'localhost:3500',
-    BASE_PATH: '/api',
-    EMAIL: 'juan.ruiz@leon.gob.mx'
-  },
-  POSTGRESQL: {
-    ENVIRONMENT: "QA",
-    HOST: "db.ygsmdqeaaztpnagtviao.supabase.co",
-    PORT: "5432",
-    USER_NAME: "postgres",
-    USER_PASSWORD: "Ezequielpitufo1*",
-    DATABASE: "postgres",
-  },
+  API_ENVIRONMENT: "QA",
+  API_NAME: "API TYPESCRIPT",
+  API_PORT: 3502,
+  API_VERSION: "1.0.0",
+  API_SECRET_KEY: "*FIDOC_2025*",
+  API_CORS: "*,localhost,localhost:4200", // lista de cors se separan por una coma
+  API_DEBUG: false,
+  SWAGGER_ENVIRONMENT: "QA",
+  SWAGGER_TITLE: "API",
+  SWAGGER_HOST: 'localhost:3500',
+  SWAGGER_BASE_PATH: '/api',
+  SWAGGER_EMAIL: 'juan.ruiz@leon.gob.mx',
+  POSTGRESQL_ENVIRONMENT: "QA",
+  POSTGRESQL_HOST: "db.ygsmdqeaaztpnagtviao.supabase.co",
+  POSTGRESQL_PORT: "5432",
+  POSTGRESQL_USER_NAME: "postgres",
+  POSTGRESQL_USER_PASSWORD: "Ezequielpitufo1*",
+  POSTGRESQL_DATABASE: "postgres",
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
   RESEND_API_KEY: "re_htyyqq6h_CyyGzB3MteatA3dHEhoBMbwo",
   IP: 'http://localhost:4200'

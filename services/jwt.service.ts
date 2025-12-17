@@ -13,15 +13,15 @@ export class JwtService {
             iat: moment().unix(),
             exp: moment().add(30, 'days').unix
         };
-        return jwt.encode(payload, global.ENVGLOBAL.API.SECRET_KEY);
+        return jwt.encode(payload, global.ENVGLOBAL.API_SECRET_KEY);
     }
 
     public async encode(data: any) {
-        return jwt.encode(data, global.ENVGLOBAL.API.SECRET_KEY);
+        return jwt.encode(data, global.ENVGLOBAL.API_SECRET_KEY);
     }
 
     public async decode(data: any) {
-        return await jwt.decode(data, global.ENVGLOBAL.API.SECRET_KEY);
+        return await jwt.decode(data, global.ENVGLOBAL.API_SECRET_KEY);
     }
 
 }
