@@ -2,7 +2,7 @@ export default {
   API: {
     ENVIRONMENT: "QA",
     NAME: "API TYPESCRIPT",
-    PORT: 3500,
+    PORT: 3503,
     VERSION: "1.0.0",
     SECRET_KEY: "*FIDOC_2025*",
     CORS: "*,localhost,localhost:4200", // lista de cors se separan por una coma
@@ -13,16 +13,16 @@ export default {
     ENVIRONMENT: "QA",
     TITLE: "API",
     HOST: 'localhost:3500',
-    BASE_PATH: '/v1',
+    BASE_PATH: '/api',
     EMAIL: 'juan.ruiz@leon.gob.mx'
   },
   POSTGRESQL: {
     ENVIRONMENT: "QA",
-    HOST: "172.17.15.21",
+    HOST: "db.ygsmdqeaaztpnagtviao.supabase.co",
     PORT: "5432",
-    USER_NAME: "usrfidoc",
-    USER_PASSWORD: "Z8XacQ@eb-nA",
-    DATABASE: "sgp",
+    USER_NAME: "postgres",
+    USER_PASSWORD: "Ezequielpitufo1*",
+    DATABASE: "postgres",
   },
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
   GOOGLE_APP_PASSWORD: "hyqd pide sljm ovxi",

@@ -2,7 +2,7 @@ export default {
   API: {
     ENVIRONMENT: "DEV",
     NAME: "API TYPESCRIPT",
-    PORT: 3500,
+    PORT: 3502,
     VERSION: "1.0.0",
     SECRET_KEY: "*FIDOC_2025*",
     CORS: "*,localhost,localhost:4200", // lista de cors se separan por una coma
@@ -18,11 +18,11 @@ export default {
   },
   POSTGRESQL: {
     ENVIRONMENT: "DEV",
-    HOST: "localhost",
+    HOST: "db.ygsmdqeaaztpnagtviao.supabase.co",
     PORT: "5432",
     USER_NAME: "postgres",
-    USER_PASSWORD: "root",
-    DATABASE: "sgp",
+    USER_PASSWORD: "Ezequielpitufo1*",
+    DATABASE: "postgres",
   },
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
   GOOGLE_APP_PASSWORD: "hyqd pide sljm ovxi",

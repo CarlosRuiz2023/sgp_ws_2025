@@ -22,11 +22,17 @@ let dbPostgres: Sequelize;
 const initConnections = async () => {
   dbPostgres = new Sequelize({
     dialect: "postgres",
-    host: global.ENVGLOBAL.POSTGRESQL.HOST || 'localhost',
+    host: global.ENVGLOBAL.POSTGRESQL.HOST || 'db.ygsmdqeaaztpnagtviao.supabase.co',
     port: Number(global.ENVGLOBAL.POSTGRESQL.PORT) || 5432,
-    database: global.ENVGLOBAL.POSTGRESQL.DATABASE || 'sgp',
+    database: global.ENVGLOBAL.POSTGRESQL.DATABASE || 'postgres',
     username: global.ENVGLOBAL.POSTGRESQL.USER_NAME || 'postgres',
-    password: global.ENVGLOBAL.POSTGRESQL.USER_PASSWORD || 'root',
+    password: global.ENVGLOBAL.POSTGRESQL.USER_PASSWORD || 'Ezequielpitufo1*',
+    dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
   });
   
   RolModel();

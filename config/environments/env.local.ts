@@ -2,7 +2,7 @@ export default {
   API: {
     ENVIRONMENT: "LOCAL",
     NAME: "API TYPESCRIPT",
-    PORT: 3500,
+    PORT: 3501,
     VERSION: "1.0.0",
     SECRET_KEY: "*FIDOC_2025*",
     CORS: "http://localhost:4200,http://localhost:3000,http://127.0.0.1:4200",  // lista de cors se separan por una coma
