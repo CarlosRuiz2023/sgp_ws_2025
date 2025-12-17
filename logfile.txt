@@ -1,3 +1,4 @@
 [10-12-2025 11:11:32] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
 [10-12-2025 11:12:12] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
 [10-12-2025 11:15:09] ERROR: Error durante la ejecución de agregarEntrega: inserción o actualización en la tabla «tbl_entregas» viola la llave foránea «tbl_entregas_id_entrega_fkey»
+[17-12-2025 12:32:57] ERROR: Error durante la ejecución de obtenerUsuarios: getaddrinfo ENOENT db.ygsmdqeaaztpnagtviao.supabase.co

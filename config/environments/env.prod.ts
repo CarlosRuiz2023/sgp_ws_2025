@@ -25,6 +25,6 @@ export default {
     DATABASE: "postgres",
   },
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
-  GOOGLE_APP_PASSWORD: "hyqd pide sljm ovxi",
+  RESEND_API_KEY: "re_htyyqq6h_CyyGzB3MteatA3dHEhoBMbwo",
   IP: 'http://localhost:4200'
 };

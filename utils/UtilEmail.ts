@@ -1,47 +1,33 @@
-import nodemailer from 'nodemailer';
+import { Resend } from "resend";
 
 export class UtilEmail {
 
-    private transporter;
+    private resend: Resend;
 
     constructor() {
-        this.transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: "charlyxbox360nuevo@gmail.com",
-                pass: global.ENVGLOBAL?.GOOGLE_APP_PASSWORD || 'hyqd pide sljm ovxi',
-            },
-        });
-
-        this.transporter.verify()
-            .then(() => console.log("Ready for send emails"))
-            .catch((err) => console.error("Error verifying transporter:", err));
-    }
-
-    public getTransporter() {
-        return this.transporter;
+        this.resend = new Resend(global.ENVGLOBAL?.RESEND_API_KEY || "re_htyyqq6h_CyyGzB3MteatA3dHEhoBMbwo");
     }
 
     /**
-     * Método opcional para enviar correos directamente
+     * Enviar correo
      */
     public async enviarCorreo(opciones: {
         to: string;
         subject: string;
-        html?: string;
+        html?: string | undefined;
         text?: string;
-    }) {
+    }): Promise<boolean> {
         try {
-            await this.transporter.sendMail({
-                from: `"FIDOC" <charlyxbox360nuevo@gmail.com>`,
-                ...opciones
+            const result = await this.resend.emails.send({
+                from: 'FIDOC <onboarding@resend.dev>',
+                to: ''+opciones.to,
+                subject: ''+opciones.subject,
+                html: ''+opciones.html
             });
 
             return true;
         } catch (error) {
-            console.error("Error al enviar correo:", error);
+            console.error("❌ Error al enviar correo:", error);
             return false;
         }
     }
