@@ -1,8 +1,7 @@
-import Express, { NextFunction } from "express";
+import dns from 'dns';
+dns.setDefaultResultOrder('ipv4first');
+import Express from "express";
 import cors from "cors";
-import morgan from "morgan";
-import helmet from "helmet";
-import compression from "compression";
 
 import Environment from "./config/helpers/environment.helper"; // HELPER AMBIENTE
 import ServerConfig from "./server/server.config";
@@ -13,7 +12,6 @@ import swaggerUI from "swagger-ui-express";
 import { SwaggerInterface } from "./config/swagger/swagger-interface";
 import { initConnections } from "./config/db/connection";
 import fileUpload from "express-fileupload";
-import dns from 'dns';
 
 const _UtilFecha = new UtilFecha();
 const environment = Environment();
@@ -26,7 +24,6 @@ var _SwaggerInterface = new SwaggerInterface();
   const ENV = await environment.environmentInstance();
   //VARIABLE GLOBAL PARA UTILIZAR EN NUESTRA APLICACION
   global.ENVGLOBAL = ENV;
-  dns.setDefaultResultOrder('ipv4first');
   
   await initConnections();
 
