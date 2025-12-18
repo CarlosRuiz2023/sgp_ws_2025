@@ -20,27 +20,18 @@ import { FirmaModel } from '../../models/firma.model';
 let dbPostgres: Sequelize;
 
 const initConnections = async () => {
-  dbPostgres = new Sequelize({
-    dialect: "postgres",
-    host: process.env.POSTGRESQL_HOST || 'aws-0-us-west-2.pooler.supabase.com',
-    port: Number(process.env.POSTGRESQL_PORT) || 6543,
-    database: process.env.POSTGRESQL_DATABASE || 'postgres',
-    username: process.env.POSTGRESQL_USER_NAME || 'postgres.ygsmdqeaaztpnagtviao',
-    password: process.env.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
+  dbPostgres = new Sequelize(
+  'postgresql://postgres.ygsmdqeaaztpnagtviao:Ezequielpitufo1*@aws-0-us-west-2.pooler.supabase.com:6543/postgres',
+  {
+    dialect: 'postgres',
     dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false,
       },
     },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    logging: false
-  });
+  }
+);
 
 
   RolModel();
