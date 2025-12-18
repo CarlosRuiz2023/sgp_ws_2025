@@ -22,26 +22,20 @@ let dbPostgres: Sequelize;
 const initConnections = async () => {
   dbPostgres = new Sequelize({
     dialect: "postgres",
-    host: global.ENVGLOBAL.POSTGRESQL_HOST || 'db.ygsmdqeaaztpnagtviao.supabase.co',
-    port: Number(global.ENVGLOBAL.POSTGRESQL_PORT) || 5432,
-    database: global.ENVGLOBAL.POSTGRESQL_DATABASE || 'postgres',
-    username: global.ENVGLOBAL.POSTGRESQL_USER_NAME || 'postgres',
-    password: global.ENVGLOBAL.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      },
-      logging: false,
-      // 👇 CLAVE
-      pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-      }
-    }
+    host: process.env.POSTGRESQL_HOST || 'aws-0-us-west-2.pooler.supabase.com',
+    port: Number(process.env.POSTGRESQL_PORT) || 6543,
+    database: process.env.POSTGRESQL_DATABASE || 'postgres',
+    username: process.env.POSTGRESQL_USER_NAME || 'postgres.ygsmdqeaaztpnagtviao',
+    password: process.env.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    logging: false
   });
+
 
   RolModel();
   EmpresaModel();

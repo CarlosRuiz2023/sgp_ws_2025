@@ -1,7 +1,10 @@
 import dns from 'dns';
-dns.lookup('db.ygsmdqeaaztpnagtviao.supabase.co', { all: true }, (err, addresses) => {
-  console.log('DNS resolve:', addresses);
-});
+
+dns.lookup(
+  'aws-0-us-west-2.pooler.supabase.com',
+  { all: true },
+  console.log
+);
 import Express from "express";
 import cors from "cors";
 
