@@ -8,7 +8,7 @@ import { PermisoModel } from '../../models/permiso.model';
 import { ModuloPermisoModel } from '../../models/modulo_permiso.model';
 import { AccesoModel } from '../../models/acceso.model';
 import { ColoniaModel } from '../../models/colonia.model';
-import { ObraModel} from '../../models/obra.model';
+import { ObraModel } from '../../models/obra.model';
 import { ComiteModel } from '../../models/comite.model';
 import { EstimacionModel } from '../../models/estimacion.model';
 import { ContratoModel } from '../../models/contrato.model';
@@ -28,13 +28,21 @@ const initConnections = async () => {
     username: global.ENVGLOBAL.POSTGRESQL_USER_NAME || 'postgres',
     password: global.ENVGLOBAL.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
     dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      },
+      logging: false,
+      // 👇 CLAVE
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      }
     }
-  }
   });
-  
+
   RolModel();
   EmpresaModel();
   UsuarioModel();
