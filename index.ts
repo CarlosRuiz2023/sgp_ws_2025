@@ -1,5 +1,7 @@
 import dns from 'dns';
-dns.setDefaultResultOrder('ipv4first');
+dns.lookup('db.ygsmdqeaaztpnagtviao.supabase.co', { all: true }, (err, addresses) => {
+  console.log('DNS resolve:', addresses);
+});
 import Express from "express";
 import cors from "cors";
 
