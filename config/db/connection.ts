@@ -27,6 +27,12 @@ const initConnections = async () => {
     database: process.env.POSTGRESQL_DATABASE || 'postgres',
     username: process.env.POSTGRESQL_USER_NAME || 'postgres.ygsmdqeaaztpnagtviao',
     password: process.env.POSTGRESQL_USER_PASSWORD || 'Ezequielpitufo1*',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     pool: {
       max: 5,
       min: 0,
