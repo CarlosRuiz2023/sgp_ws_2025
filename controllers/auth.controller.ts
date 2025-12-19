@@ -141,7 +141,7 @@ export class AuthController {
       // Generar JWT
       const token = await _Util_Jwt.generarJWT(id_usuario);
 
-      const loginUrl = `${global.ENVGLOBAL?.IP || "https://sgp-ws-2025.onrender.com"}/api/auth/`;
+      const loginUrl = `${global.ENVGLOBAL?.IP_WS || "https://sgp-ws-2025.onrender.com"}/api/auth/`;
 
       // CONSTRUIMOS EL FORMULARIO
       const resetForm = `
