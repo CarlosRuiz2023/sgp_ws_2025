@@ -12,6 +12,7 @@ export default {
   SWAGGER_BASE_PATH: '/api',
   SWAGGER_EMAIL: 'juan.ruiz@leon.gob.mx',
   POSTGRESQL_ENVIRONMENT: "QA",
+  POSTGRESQL_URL: "postgresql://postgres.ygsmdqeaaztpnagtviao:Ezequielpitufo1*@aws-0-us-west-2.pooler.supabase.com:6543/postgres",
   POSTGRESQL_HOST: "aws-0-us-west-2.pooler.supabase.com",
   POSTGRESQL_PORT: "6543",
   POSTGRESQL_USER_NAME: "postgres.ygsmdqeaaztpnagtviao",
@@ -19,5 +20,5 @@ export default {
   POSTGRESQL_DATABASE: "postgres",
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
   RESEND_API_KEY: "re_htyyqq6h_CyyGzB3MteatA3dHEhoBMbwo",
-  IP: 'http://localhost:4200'
+  IP: 'https://sgp-ws-2025.onrender.com'
 };

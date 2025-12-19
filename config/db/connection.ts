@@ -21,7 +21,7 @@ let dbPostgres: Sequelize;
 
 const initConnections = async () => {
   dbPostgres = new Sequelize(
-  'postgresql://postgres.ygsmdqeaaztpnagtviao:Ezequielpitufo1*@aws-0-us-west-2.pooler.supabase.com:6543/postgres',
+  process.env.POSTGRESQL_URL || 'postgresql://postgres.ygsmdqeaaztpnagtviao:Ezequielpitufo1*@aws-0-us-west-2.pooler.supabase.com:6543/postgres',
   {
     dialect: 'postgres',
     dialectOptions: {

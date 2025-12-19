@@ -12,6 +12,7 @@ export default {
   SWAGGER_BASE_PATH: '/api',
   SWAGGER_EMAIL: 'juan.ruiz@leon.gob.mx',
   POSTGRESQL_ENVIRONMENT: "LOCAL",
+  POSTGRESQL_URL: "postgresql://postgres.ygsmdqeaaztpnagtviao:Ezequielpitufo1*@aws-0-us-west-2.pooler.supabase.com:6543/postgres",
   POSTGRESQL_HOST: "localhost",
   POSTGRESQL_PORT: "5432",
   POSTGRESQL_USER_NAME: "postgres",
