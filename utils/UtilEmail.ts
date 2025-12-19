@@ -1,4 +1,5 @@
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+import { Usuario } from "../models/usuario.model";
 
 export class UtilEmail {
 
@@ -22,9 +23,10 @@ export class UtilEmail {
     }): Promise<boolean> {
         try {
             const sentFrom = new Sender("noreply@test-3m5jgroq80xgdpyo.mlsender.net", "Charly Gomez");
-
+            const usuario = await Usuario.findOne({ where: { correo: opciones.to } });
+            const { nombres } = usuario;
             const recipients = [
-                new Recipient(''+opciones.to, "Prueba")
+                new Recipient(''+opciones.to, nombres || 'Anonimo')
             ];
 
             const emailParams = new EmailParams()

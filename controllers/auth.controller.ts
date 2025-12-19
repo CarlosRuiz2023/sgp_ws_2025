@@ -296,7 +296,7 @@ export class AuthController {
     await usuario.save();
 
     // URL dinámica
-    const loginUrl = `${global.ENVGLOBAL?.IP || "http://localhost:4200"}/auth/login`;
+    const loginUrl = `${global.ENVGLOBAL?.IP || "https://sgp-ws-2025.onrender.com"}/auth/login`;
 
     // Aquí insertamos tu HTML
     const html = `
