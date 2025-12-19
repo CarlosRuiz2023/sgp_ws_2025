@@ -141,9 +141,11 @@ export class AuthController {
       // Generar JWT
       const token = await _Util_Jwt.generarJWT(id_usuario);
 
+      const loginUrl = `${global.ENVGLOBAL?.IP || "https://sgp-ws-2025.onrender.com"}/auth/`;
+
       // CONSTRUIMOS EL FORMULARIO
       const resetForm = `
-      <form style="max-width: 500px; margin: 0 auto; border: 2px solid #ccc; padding: 20px;" method="POST" action="http://localhost:3500/api/auth/cambiarContrasenia/${token}">
+      <form style="max-width: 500px; margin: 0 auto; border: 2px solid #ccc; padding: 20px;" method="POST" action="${loginUrl}cambiarContrasenia/${token}">
         <h2 style="text-align: center;">Restablecer contraseña</h2>
         <label style="display:block; margin-bottom: 10px; color: #003366;" for="password">Nueva contraseña:</label>
         <input style="display: block; padding: 10px; width: 95%; border-radius: 4px; border: 2px solid #003366;" type="password" id="password" name="password" placeholder="New Password">
