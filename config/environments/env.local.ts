@@ -20,5 +20,6 @@ export default {
   POSTGRESQL_DATABASE: "sgp",
   SECRETORPRIVATEKEY: "Est03sMyPublick3y23@913",
   RESEND_API_KEY: "re_htyyqq6h_CyyGzB3MteatA3dHEhoBMbwo",
+  MAILERSEND_API_KEY: "mlsn.307509db207589fe33d2b991b2e81db4521ae410c6f8eb985a1aa719f3b75968",
   IP: 'http://localhost:4200'
 };

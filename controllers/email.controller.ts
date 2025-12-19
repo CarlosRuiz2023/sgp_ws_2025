@@ -71,11 +71,13 @@ export class EmailController {
       </div>
     `;
 
-    await utilEmails.enviarCorreo({
+    const result = await utilEmails.enviarCorreo({
       to: correo,
       subject: titulo,
       html: html
     });
+
+    console.log(result);
 
     return { msg: "Email sent successfully" };
   } catch (e) {
